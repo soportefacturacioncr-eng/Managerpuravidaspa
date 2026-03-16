@@ -226,13 +226,12 @@
                 const bloquesDelDia = bloqueosManuales.filter(b => b.fecha === dateStr);
                 
                 // Calcular cuántos espacios de los 17 (slots totales) están ocupados
-                // Usamos un Set para no contar doble si por algún error de sistema hay una cita y un bloqueo a la misma hora
                 const slotsOcupados = new Set([
                     ...citasDelDia.map(c => c.hora), 
                     ...bloquesDelDia.map(b => b.hora)
                 ]).size;
                 
-                // Calculamos el porcentaje de ocupación (ej. 8 slots ocupados de 17 = 47%)
+                // Calculamos el porcentaje de ocupación
                 const porcentajeLleno = (slotsOcupados / slots.length) * 100;
 
                 const hasCitas = citasDelDia.length > 0;
@@ -245,7 +244,6 @@
                 if(hasCitas) dots += `<span class="dot dot-green"></span>`;
                 if(hasBlocks) dots += `<span class="dot dot-red"></span>`;
                 
-                // Inyectamos el porcentaje calculado en el height del div 'day-fill'
                 grid.innerHTML += `
                     <div onclick="selectDay('${dateStr}')" class="day-cell ${isToday ? 'today' : ''} ${isSelected ? 'selected' : ''}">
                         <div class="day-fill" style="height: ${porcentajeLleno}%;"></div>
@@ -368,6 +366,23 @@
 
             if(snap.exists()) {
                 const d = snap.data();
+                
+                // --- CÁLCULO DE EDAD ---
+                // Si en tu base de datos el campo se llama distinto, cambia 'fechaNacimiento' aquí abajo
+                let edadMostrar = d.edad || 'N/A';
+                if (d.fechaNacimiento) { 
+                    const hoy = new Date();
+                    const fechaNac = new Date(d.fechaNacimiento);
+                    let edadCalculada = hoy.getFullYear() - fechaNac.getFullYear();
+                    const mes = hoy.getMonth() - fechaNac.getMonth();
+                    
+                    if (mes < 0 || (mes === 0 && hoy.getDate() < fechaNac.getDate())) {
+                        edadCalculada--;
+                    }
+                    edadMostrar = `${edadCalculada} años`;
+                }
+                // --- FIN DE CÁLCULO DE EDAD ---
+
                 const q = query(collection(db, "bookings"), where("telefono", "==", telefono));
                 const querySnapshot = await getDocs(q);
                 let listaSesiones = [];
@@ -385,7 +400,7 @@
                 cont.innerHTML = `
                     <h3 class="text-2xl font-bold text-emerald-900 border-b pb-4 mb-4">${d.nombre}</h3>
                     <div class="space-y-4 text-xs font-bold uppercase text-stone-500">
-                        <p>Edad: ${d.edad || 'N/A'}</p>
+                        <p>Edad: ${edadMostrar}</p>
                         <p>Dirección: ${d.direccion}</p>
                         <div class="bg-stone-50 p-4 rounded-2xl">
                             <p class="text-emerald-800 mb-2">FICHA MÉDICA:</p>
