@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Pura Vida Wellness | Kimberly Salazar</title>
+    
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="preload" href="logo.png" as="image">
+    
+    <meta property="og:title" content="Pura Vida Wellness | Kimberly Salazar">
+    <meta property="og:description" content="Sanación pura en la comodidad de tu hogar. Servicios exclusivos para mujeres.">
+    <meta property="og:url" content="https://purelifewellness.vercel.app/">
+    <meta property="og:image" content="https://purelifewellness.vercel.app/vista-previa.jpg">
+    <meta property="og:image:width" content="1424">
+    <meta property="og:image:height" content="752">
+    <meta property="og:type" content="website">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;500;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary-green: #1a3a24;
+            --adjusted-green: #3a614c; 
+            --antique-gold: #d4af37;
+            --olive-text: #5d7455; 
+            --dark-btn: #3e5641; 
+            --selected-bg: rgba(254, 226, 226, 0.8);
+            --selected-border: #ef4444;
+            --selected-text: #b91c1c;
+        }
+
+        .num-limpio, input, select, textarea, .time-slot, .precio-linea {
+            font-family: 'Lato', sans-serif !important;
+        }
+
+        body { 
+            font-family: 'Cormorant Garamond', serif; 
+            font-weight: 500;
+            scroll-behavior: smooth; 
+            -webkit-tap-highlight-color: transparent; 
+            font-variant-numeric: lining-nums tabular-nums;
+            font-feature-settings: "lnum" 1, "tnum" 1;
+        }
+
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('fondo.jpg') no-repeat center center;
+            background-size: cover;
+            z-index: -100;
+        }
+
+        input, textarea, select {
+            color: #1c1917 !important; 
+            -webkit-text-fill-color: #1c1917 !important;
+            opacity: 1 !important;
+        }
+        
+        ::placeholder {
+            color: #44403c !important; 
+            -webkit-text-fill-color: #44403c !important;
+            opacity: 1 !important;
+        }
+        
+        ::-webkit-input-placeholder {
+            color: #44403c !important; 
+            -webkit-text-fill-color: #44403c !important;
+            opacity: 1 !important;
+        }
+
+        h1, h2, h3, .fuente-elegante, button { 
+            font-family: 'Cormorant Garamond', serif !important; 
+            font-weight: 500;
+        }
+
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.15) !important; 
+            backdrop-filter: blur(10px) !important;
+            -webkit-backdrop-filter: blur(10px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.3) !important; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.25) !important; 
+            backdrop-filter: blur(8px) !important;
+            -webkit-backdrop-filter: blur(8px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.4) !important;
+            box-shadow: inset 0 2px 5px rgba(0,0,0,0.05) !important;
+        }
+
+        .glass-dark {
+            background: rgba(26, 58, 36, 0.45) !important; 
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+            border-top: 1px solid rgba(255, 255, 255, 0.15) !important;
+        }
+
+        .main-header {
+            position: relative;
+            width: 100%;
+            height: 280px; 
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: transparent; 
+        }
+        
+        .halo-wrapper {
+            position: relative;
+            width: 320px; 
+            height: 320px; 
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #ffffff;
+            border-radius: 50%;
+            -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 70%);
+            mask-image: radial-gradient(circle, rgba(0,0,0,1) 15%, rgba(0,0,0,0) 70%);
+            box-shadow: none !important;
+        }
+
+        .halo-logo-img {
+            width: 260px; 
+            mix-blend-mode: multiply; 
+            -webkit-mix-blend-mode: multiply;
+            object-fit: contain;
+            background-color: transparent;
+        }
+
+        .slider-container { width: 100%; max-width: 500px; margin: 0 auto; position: relative; overflow: hidden; border-radius: 50px; border: 2px solid rgba(255,255,255,0.2); }
+        .slider-wrapper { display: flex; transition: transform 0.8s ease-in-out; }
+        .slide { min-width: 100%; height: 350px; cursor: zoom-in; }
+        .slide img { width: 100%; height: 100%; object-fit: cover; }
+        
+        .lightbox { display: none; position: fixed; z-index: 10000; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); justify-content: center; align-items: center; }
+        .lightbox img { max-width: 90%; max-height: 80%; border-radius: 15px; box-shadow: 0 0 30px rgba(255,255,255,0.2); }
+
+        .perfil-kim { width: 160px; height: 160px; border-radius: 50%; border: 4px solid rgba(255,255,255,0.4); box-shadow: 0 10px 25px rgba(0,0,0,0.1); margin: 0 auto 20px; overflow: hidden; background-color: transparent; }
+        .perfil-kim img { width: 100%; height: 100%; object-fit: cover; }
+
+        #loginModal {
+            display: flex;
+            position: fixed;
+            z-index: 2000;
+            left: 0; top: 0;
+            width: 100%; 
+            height: 100%;
+            height: 100dvh; 
+            background-image: url('fondo.jpg'); 
+            background-size: cover;
+            background-position: center;
+            align-items: center; 
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .login-content {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+            padding: 1rem; 
+            background: transparent;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        #inputTelefonoLogin {
+            width: 100%;
+            max-width: 320px;
+            padding: 18px;
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.4) !important; 
+            backdrop-filter: blur(8px) !important;
+            -webkit-backdrop-filter: blur(8px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.5) !important;
+            color: #1a3a24;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin: 0 auto 12px auto;
+            display: block;
+            text-align: center;
+            outline: none;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+
+        #inputTelefonoLogin::placeholder { color: #3a614c; opacity: 0.9; font-weight: normal; font-family: 'Cormorant Garamond', serif !important; }
+
+        #btnIngresarModal {
+            background-color: var(--dark-btn);
+            color: white;
+            padding: 18px;
+            border-radius: 35px;
+            font-size: 1.2rem;
+            letter-spacing: 3px;
+            width: 100%;
+            max-width: 320px;
+            margin: 0 auto;
+            display: block;
+            border: 2px solid rgba(255,255,255,0.3);
+            transition: all 0.3s ease;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+        }
+
+        @keyframes latidoIngreso {
+            0%, 100% { transform: scale(1); box-shadow: 0 8px 32px rgba(0,0,0,0.25); }
+            50% { transform: scale(1.05); box-shadow: 0 15px 45px rgba(255,255,255,0.3); }
+        }
+        @keyframes resplandorIngreso {
+            0% { left: -100%; }
+            20% { left: 100%; }
+            100% { left: 100%; }
+        }
+        .btn-animado-ingreso {
+            position: relative;
+            overflow: hidden;
+            animation: latidoIngreso 2.5s infinite ease-in-out;
+        }
+        .btn-animado-ingreso::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 50%;
+            height: 100%;
+            background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.5), transparent);
+            animation: resplandorIngreso 3.5s infinite;
+        }
+
+        #welcomeModal {
+            background: transparent;
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+        }
+
+        .welcome-card {
+            position: relative;
+            width: 90%;
+            max-width: 420px;
+            text-align: center;
+            padding: 2.5rem 1.5rem;
+            z-index: 10;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .lang-switcher { 
+            position: fixed; 
+            top: 20px; 
+            right: 20px; 
+            z-index: 9999; 
+            background: rgba(255, 255, 255, 0.7); 
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            padding: 5px; 
+            border-radius: 30px; 
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2); 
+            display: flex; 
+            gap: 5px; 
+        }
+        .lang-btn { padding: 8px 15px; border-radius: 20px; font-size: 10px; font-weight: bold; text-transform: uppercase; cursor: pointer; transition: all 0.3s; font-family: 'Lato', sans-serif !important; }
+        .lang-btn.active { background: #1a3a24; color: white; }
+
+        .time-slot { transition: all 0.3s ease; cursor: pointer; text-align: center; font-size: 11px; font-weight: bold; border-radius: 15px; height: 55px; display: flex; align-items: center; justify-content: center; }
+        
+        .time-slot.selected { 
+            background-color: var(--selected-bg) !important; 
+            color: var(--selected-text) !important; 
+            border-color: var(--selected-border) !important; 
+            transform: scale(1.05); 
+        }
+        
+        .time-slot.blocked { background-color: rgba(254, 226, 226, 0.4) !important; color: #b91c1c !important; cursor: not-allowed; border: 2px solid rgba(239, 68, 68, 0.4) !important; flex-direction: column; line-height: 1.2; opacity: 0.6; }
+
+        .zona-label { transition: all 0.2s ease; cursor: pointer; }
+        
+        .zona-checkbox:checked + label { 
+            background-color: var(--selected-bg) !important; 
+            color: var(--selected-text) !important; 
+            border-color: var(--selected-border) !important; 
+            transform: scale(1.05); 
+        }
+
+        @keyframes brincar { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.05); } }
+        @keyframes destello { 0% { left: -100%; } 50%, 100% { left: 100%; } }
+        .animacion-premium { position: relative; overflow: hidden; animation: brincar 2.5s infinite ease-in-out; }
+        .animacion-premium::before { content: ""; position: absolute; top: 0; left: -100%; width: 50%; height: 100%; background: linear-gradient(120deg, transparent, rgba(255, 255, 255, 0.5), transparent); animation: destello 3.5s infinite; }
+
+        .service-card { transition: all 0.4s ease; border-radius: 45px; }
+        .photo-circle { width: 130px; height: 130px; border-radius: 50%; overflow: hidden; margin: 0 auto 1.5rem; border: 4px solid rgba(255,255,255,0.4); box-shadow: 0 10px 20px rgba(0,0,0,0.1); display: flex; align-items: center; justify-content: center; background-color: transparent; position: relative; }
+        .photo-circle img { width: 100%; height: 100%; object-fit: cover; z-index: 2; position: relative; }
+
+        .modal { display: none; position: fixed; z-index: 10000; left: 0; top: 0; width: 100%; height: 100%; height: 100dvh; background-color: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); justify-content: center; align-items: center; }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.95); } to { opacity: 1; transform: scale(1); } }
+
+        .whatsapp-float { position: fixed; width: 65px; height: 65px; bottom: 25px; right: 25px; background-color: #25d366; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 35px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); z-index: 100; }
+        .sms-float { position: fixed; width: 65px; height: 65px; bottom: 105px; right: 25px; background-color: #3b82f6; color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 8px 25px rgba(0,0,0,0.2); z-index: 100; }
+    </style>
+</head>
+<body class="text-stone-800">
+
+    <div id="loginModal">
+        <div class="login-content">
+            <div class="halo-wrapper" style="width: 220px; height: 220px; margin-bottom: 0px;">
+                <img src="logo.png" alt="Pura Vida Logo" class="halo-logo-img" style="width: 180px;">
+            </div>
+            
+            <input type="tel" id="inputTelefonoLogin" class="num-limpio" autocomplete="tel" placeholder="Número de teléfono">
+            <button id="btnIngresarModal" class="btn-animado-ingreso" onclick="window.accesoInicial()">Ingresar</button>
+            
+            <div id="msgHistorialLogin" class="hidden mt-3 p-4 rounded-2xl text-[15px] font-bold flex items-center justify-center gap-2 glass-panel w-full max-w-xs">
+                <i id="msgIconLogin" class="fas fa-spinner fa-spin"></i>
+                <span id="msgTextLogin">Buscando...</span>
+            </div>
+        </div>
+    </div>
+
+    <div id="welcomeModal" class="modal" onclick="if(event.target==this) this.style.display='none'">
+        <div class="welcome-card glass-panel rounded-[40px] shadow-2xl">
+            <div class="halo-wrapper" style="width: 260px; height: 260px; margin-bottom: 20px;">
+                <img src="logo.png" alt="Logo Pura Vida" class="halo-logo-img" style="width: 200px;">
+            </div>
+            
+            <h3 id="welcomeTitle" class="text-4xl md:text-5xl font-black text-white tracking-tighter leading-tight drop-shadow-md"></h3>
+            
+            <div class="glass-panel p-4 rounded-3xl inline-block mt-4">
+                <p id="welcomeDesc" class="text-stone-900 text-lg md:text-xl font-bold"></p>
+            </div>
+            
+            <div class="pt-4">
+                <button onclick="document.getElementById('welcomeModal').style.display='none'" class="bg-[#3a614c] text-white px-12 py-4 rounded-full font-bold tracking-widest text-sm shadow-xl hover:scale-105 transition-transform border border-white/30">Ok</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="lang-switcher">
+        <div id="btn-en" class="lang-btn active num-limpio" onclick="setLanguage('en')">EN</div>
+        <div id="btn-es" class="lang-btn num-limpio" onclick="setLanguage('es')">ES</div>
+    </div>
+
+    <header class="main-header">
+        <div class="halo-wrapper">
+            <img src="logo.png" alt="Pura Vida Logo" class="halo-logo-img">
+        </div>
+    </header>
+
+    <a href="sms:+19542261282" class="sms-float" target="_blank">
+        <i class="fas fa-comment-sms"></i>
+    </a>
+    <a href="https://wa.me/19542261282" class="whatsapp-float" target="_blank">
+        <i class="fab fa-whatsapp"></i>
+    </a>
+
+    <div id="lightbox" class="lightbox" onclick="this.style.display='none'">
+        <img id="imgAmpliada" src="" alt="Zoom">
+    </div>
+
+    <div id="serviceModal" class="modal" onclick="if(event.target==this) closeModal()">
+        <div class="modal-content shadow-2xl text-left glass-panel rounded-[40px] w-[90%] max-w-[500px] max-h-[85vh] overflow-y-auto animation-[popIn_0.3s_ease] relative">
+            <div class="bg-[#1a3a24]/90 backdrop-blur-md p-6 text-white flex justify-between items-center rounded-t-[40px]">
+                <h3 id="modalTitle" class="text-xl fuente-elegante tracking-widest">Detalles del servicio</h3>
+                <button onclick="closeModal()" class="text-3xl leading-none">&times;</button>
+            </div>
+            <div id="modalBody" class="p-8 text-stone-900 leading-relaxed text-sm font-bold"></div>
+            <div class="p-6 text-center border-t border-stone-300/40">
+                <button onclick="closeModal()" id="modalCloseBtn" class="bg-[#1a3a24] text-white px-12 py-3 rounded-full text-xs font-bold tracking-widest">Entendido</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="successModal" class="modal">
+        <div class="modal-content p-10 text-center space-y-6 glass-panel rounded-[40px] w-[90%] max-w-[500px] max-h-[85vh] overflow-y-auto animation-[popIn_0.3s_ease] relative">
+            <div class="w-20 h-20 bg-green-100/70 text-green-700 rounded-full flex items-center justify-center mx-auto text-4xl"><i class="fas fa-check"></i></div>
+            <h3 id="successTitle" class="text-2xl font-bold text-stone-900 tracking-tighter">¡Reserva procesada!</h3>
+            <p id="successDesc" class="text-stone-800 text-sm font-bold italic">Elige cómo contactar a Kimberly para confirmar:</p>
+            
+            <button onclick="window.enviarReserva('wa')" id="btnSendWA" class="w-full bg-[#25d366]/90 backdrop-blur-md text-white py-4 rounded-2xl font-bold text-lg shadow-md flex items-center justify-center gap-3">
+                <i class="fab fa-whatsapp text-2xl"></i> Enviar por WhatsApp
+            </button>
+            <button onclick="window.enviarReserva('sms')" id="btnSendSMS" class="w-full bg-blue-500/90 backdrop-blur-md text-white py-4 rounded-2xl font-bold text-lg shadow-md flex items-center justify-center gap-3">
+                <i class="fas fa-comment-sms text-2xl"></i> Enviar por SMS
+            </button>
+
+            <a id="btnGoogleCalendar" href="#" target="_blank" class="block glass-input p-5 rounded-3xl flex items-center justify-center gap-4 shadow-sm transition active:scale-95 mt-6">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Google_Calendar_icon_%282020%29.svg" class="w-7" alt="Google">
+                <span id="successCalendarBtn" class="font-bold text-stone-900 text-sm">Añadir a mi calendario</span>
+            </a>
+            <button onclick="location.reload()" id="successBackBtn" class="text-xs text-stone-700 font-bold underline mt-2">Volver</button>
+        </div>
+    </div>
+
+    <section class="pt-8 pb-16 px-4 md:px-6 container mx-auto text-center">
+        <div class="max-w-4xl mx-auto space-y-10 glass-panel p-8 md:p-12 rounded-[50px]">
+            <div class="flex justify-center">
+                <span id="heroNotice" class="animacion-premium bg-pink-600/80 backdrop-blur-md px-8 py-3 rounded-full text-[10px] font-black tracking-[0.2em] inline-block shadow-lg text-white border border-pink-400/30">Servicio exclusivo para mujeres</span>
+            </div>
+            <h2 id="heroTitle" class="text-3xl lg:text-7xl font-bold text-stone-900 leading-tight italic drop-shadow-sm">Sanación pura en la comodidad de tu hogar.</h2>
+            <p id="heroDesc" class="text-lg text-stone-800 font-bold max-w-2xl mx-auto leading-relaxed">Transforma tu espacio personal en un santuario de paz profunda con el toque profesional de Costa Rica.</p>
+            <div class="pt-4">
+                <a href="#reservas" id="heroBtn" class="animacion-premium bg-emerald-800/90 backdrop-blur-md border border-emerald-500/30 text-white px-12 py-5 rounded-[35px] font-bold shadow-2xl inline-block text-xs tracking-[0.2em] transform active:scale-95 transition">Reservar sesión</a>
+            </div>
+            <div class="pt-10 flex justify-center">
+                <div class="slider-container glass-panel border-none shadow-xl p-2">
+                    <div class="slider-wrapper" id="sliderWrapper">
+                        <div class="slide rounded-[40px] overflow-hidden"><img src="trabajo1.jpg" alt="Masaje 1" onclick="window.ampliarImagen(this.src)"></div>
+                        <div class="slide rounded-[40px] overflow-hidden"><img src="trabajo2.jpg" alt="Masaje 2" onclick="window.ampliarImagen(this.src)"></div>
+                        <div class="slide rounded-[40px] overflow-hidden"><img src="trabajo3.jpg" alt="Masaje 3" onclick="window.ampliarImagen(this.src)"></div>
+                        <div class="slide rounded-[40px] overflow-hidden"><img src="trabajo4.jpg" alt="Masaje 4" onclick="window.ampliarImagen(this.src)"></div>
+                        <div class="slide rounded-[40px] overflow-hidden"><img src="trabajo5.jpg" alt="Masaje 5" onclick="window.ampliarImagen(this.src)"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-16 px-4 md:px-6">
+        <div class="container mx-auto text-center glass-panel rounded-[50px] p-8 md:p-12 max-w-5xl">
+            <div class="perfil-kim">
+                <img src="kim.jpg" alt="Kimberly Salazar">
+            </div>
+            
+            <h2 class="text-4xl fuente-elegante text-stone-900 font-bold tracking-tighter">Kimberly Salazar</h2>
+            <p id="bioSubtitle" class="text-stone-800 font-bold tracking-widest text-[16px] mt-2">Terapeuta de masaje licenciada • Especialista en alivio terapéutico</p>
+            <div class="w-20 h-1 bg-amber-500/50 mx-auto my-8 rounded-full"></div>
+            <p id="bioQuote" class="text-stone-900 italic max-w-2xl mx-auto text-lg leading-relaxed font-bold">"Mi misión es llevar el alivio y la calidez de Costa Rica a tu hogar, asegurando que cada mujer se sienta respetada y renovada."</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mt-16 text-left">
+                <div class="glass-input p-8 rounded-[40px] flex items-center gap-6 shadow-sm border-none">
+                    <div class="w-16 h-16 flex-shrink-0 bg-white/50 rounded-xl border border-stone-200/50 overflow-hidden shadow-sm flex items-center justify-center">
+                        <img src="certificado.jpg" alt="Certificado" class="w-full h-full object-cover">
+                    </div>
+                    <p id="bioBadge1" class="text-base font-bold text-stone-900 italic leading-tight">Especialista certificada en masaje terapéutico</p>
+                </div>
+                <div class="glass-dark p-8 rounded-[40px] flex flex-col items-center justify-center shadow-xl border-b-8 border-amber-500/50">
+                    <img src="licencia.jpg" alt="Licencia Profesional de Florida" class="w-full max-w-[120px] object-cover mb-4 rounded-xl shadow-md border border-white/20">
+                    <p id="bioBadge2" class="text-[12px] font-bold tracking-[0.4em] text-center text-white">Licencia profesional de Florida</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="servicios" class="py-16 px-4 md:px-6 text-stone-900 text-center">
+        <div class="container mx-auto max-w-6xl">
+            <div class="w-full flex justify-center mb-12">
+                <div class="glass-panel px-6 py-3 rounded-2xl inline-flex items-center justify-center gap-2 border border-stone-100/30">
+                    <h2 id="servicesTitle" class="text-4xl fuente-elegante mb-0 italic tracking-[0.2em] font-bold drop-shadow-md text-stone-900 leading-none">Rituales de sanación</h2>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+                <div class="service-card glass-panel p-8 flex flex-col shadow-lg border-none max-w-[280px] mx-auto w-full">
+                    <div class="photo-circle"><img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=400&auto=format&fit=crop" alt="Relaxing Feet"></div>
+                    <h3 id="srv1Title" class="text-xl font-bold mb-4 tracking-widest text-stone-900">Pies relajantes</h3>
+                    <div class="text-3xl font-bold mb-8 text-stone-900 precio-linea"><span class="num-limpio">$30</span> <span id="srv1Unit" class="text-xs text-stone-800 font-bold"><span class="num-limpio">/ 15 Min</span></span></div>
+                    <button onclick="openModal('pies')" id="srv1Btn" class="w-full py-4 bg-teal-700/70 border border-teal-400/30 backdrop-blur-md text-white rounded-2xl font-bold text-[10px] tracking-widest shadow-md hover:bg-teal-800 transition">Qué incluye</button>
+                </div>
+                
+                <div class="service-card glass-panel p-8 flex flex-col shadow-xl border-none max-w-[280px] mx-auto w-full">
+                    <div class="photo-circle"><img src="https://images.unsplash.com/photo-1519823551278-64ac92734fb1?q=80&w=400&auto=format&fit=crop" alt="Therapeutic Back"></div>
+                    <h3 id="srv2Title" class="text-xl font-bold mb-4 tracking-widest text-stone-900">Espalda terapéutica</h3>
+                    <div class="text-3xl font-bold mb-8 text-stone-900 precio-linea"><span class="num-limpio">$60</span> <span id="srv2Unit" class="text-xs text-stone-800 font-bold"><span class="num-limpio">/ 30 Min</span></span></div>
+                    <button onclick="openModal('espalda')" id="srv2Btn" class="w-full py-4 bg-amber-700/70 border border-amber-400/30 backdrop-blur-md text-white rounded-2xl font-bold text-[10px] tracking-widest shadow-md hover:bg-amber-800 transition">Qué incluye</button>
+                </div>
+                
+                <div class="service-card glass-panel p-8 flex flex-col shadow-lg border-none max-w-[280px] mx-auto w-full">
+                    <div class="photo-circle"><img src="https://images.unsplash.com/photo-1600334089648-b0d9d3028eb2?q=80&w=400&auto=format&fit=crop" alt="Full Body Experience"></div>
+                    <h3 id="srv3Title" class="text-xl font-bold mb-4 tracking-widest text-stone-900">Cuerpo completo</h3>
+                    <div class="text-4xl font-bold mb-8 text-stone-900 precio-linea"><span class="num-limpio">$90</span> <span id="srv3Unit" class="text-sm text-stone-800 font-bold"><span class="num-limpio">/ 45 Min</span></span></div>
+                    <button onclick="openModal('completo')" id="srv3Btn" class="w-full py-4 bg-pink-700/70 border border-pink-400/30 backdrop-blur-md text-white rounded-2xl font-bold text-[10px] tracking-widest shadow-md hover:bg-pink-800 transition">Qué incluye</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="reservas" class="py-16 container mx-auto px-4 md:px-6">
+        <div class="glass-panel rounded-[60px] overflow-hidden flex flex-col max-w-3xl mx-auto border-none shadow-2xl">
+            
+            <div class="p-10 text-left border-b border-stone-400/20">
+                <h2 id="formTitle" class="text-3xl text-stone-900 font-bold mb-10 fuente-elegante italic text-center">Agenda tu cita</h2>
+                <div class="space-y-8">
+                    <div>
+                        <label id="formLabel1" class="block text-[15px] font-bold text-stone-800 tracking-widest mb-3"><span class="num-limpio">1</span>. Elige tu terapia</label>
+                        <select id="inputServicio" onchange="window.renderSlots()" class="num-limpio w-full p-5 rounded-[25px] glass-input font-bold text-stone-900 outline-none text-sm cursor-pointer border-none">
+                            <option value="" id="formOptDefault">-- Selecciona un masaje --</option>
+                            <option value="pies">Pies relajantes ($30)</option>
+                            <option value="espalda">Espalda terapéutica ($60)</option>
+                            <option value="completo">Cuerpo completo ($90)</option>
+                        </select>
+                    </div>
+
+                    <div class="mt-4 mb-4">
+                        <label id="formLabelCupon" class="block text-[15px] font-bold text-stone-800 tracking-widest mb-3">
+                            <i class="fas fa-gift text-amber-500 mr-2"></i>Tarjeta de Regalo / Cupón
+                        </label>
+                        <div class="flex gap-3">
+                            <input type="text" id="inputCupon" placeholder="Número de cupón" class="num-limpio w-full p-5 rounded-[25px] glass-input font-bold text-stone-900 outline-none text-sm border-none" style="text-transform: uppercase;">
+                            <button type="button" id="btnCanjear" onclick="window.validarCupon()" class="bg-amber-600/90 text-white px-8 py-5 rounded-[25px] font-bold tracking-widest text-xs shadow-md hover:scale-105 active:scale-95 transition backdrop-blur-md border border-amber-400/50">
+                                Canjear
+                            </button>
+                        </div>
+                        <p id="msgCupon" class="text-xs font-bold mt-3 hidden"></p>
+                    </div>
+
+                    <div>
+                        <label id="formLabel2" class="block text-[15px] font-bold text-stone-800 tracking-widest mb-3"><span class="num-limpio">2</span>. Selecciona una fecha</label>
+                        <input type="date" id="inputFecha" onchange="window.triggerRender()" class="num-limpio w-full p-5 rounded-[25px] glass-input font-bold text-stone-900 outline-none text-sm border-none">
+                    </div>
+                    <div>
+                        <label id="formLabel3" class="block text-[15px] font-bold text-stone-800 tracking-widest mb-3 text-center"><span class="num-limpio">3</span>. Selecciona hora (bloqueo automático)</label>
+                        <div class="grid grid-cols-3 gap-3 num-limpio" id="timeSlots"></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="p-10 flex flex-col space-y-6 text-left border-b border-stone-400/20">
+                <label id="formLabel4" class="block text-[15px] font-bold text-stone-800 tracking-widest mb-1"><span class="num-limpio">4</span>. Datos personales</label>
+                <input type="tel" id="inputTelefono" placeholder="Número de teléfono" class="num-limpio w-full p-6 rounded-[30px] glass-input outline-none font-bold text-stone-900 text-sm transition-all border-none">
+                <input type="text" id="inputNombre" placeholder="Nombre completo" class="w-full p-6 rounded-[30px] glass-input outline-none font-bold text-stone-900 text-sm transition-all border-none">
+                <textarea id="inputDireccion" placeholder="Dirección exacta (Tampa, FL)" class="w-full p-6 rounded-[30px] glass-input outline-none h-32 font-bold text-stone-900 text-sm transition-all border-none"></textarea>
+            </div>
+
+            <div class="p-10 flex flex-col space-y-6 text-left">
+                <div class="mb-4">
+                    <label id="formLabel5" class="block text-[16px] font-black text-stone-900 tracking-widest"><span class="num-limpio">5</span>. Historial clínico y médico</label>
+                    <p id="formDesc5" class="text-sm text-stone-800 font-bold italic mt-1">Por favor, proporciona detalles para asegurar una terapia segura y personalizada.</p>
+                </div>
+
+                <div class="mb-2">
+                    <label id="formLabelDOB" class="block text-[15px] font-bold text-stone-800 tracking-widest mb-2 pl-4">Fecha de nacimiento</label>
+                    <div class="relative">
+                        <input type="date" id="inputFechaNacimiento" onchange="window.calcularEdad()" class="num-limpio w-full p-6 rounded-[30px] glass-input outline-none font-bold text-stone-900 text-sm transition-all border-none">
+                        <div id="displayEdad" class="absolute right-4 top-1/2 transform -translate-y-1/2 text-xs font-bold text-emerald-900 bg-emerald-200/80 px-3 py-1 rounded-full hidden num-limpio"></div>
+                    </div>
+                </div>
+
+                <textarea id="inputCondiciones" placeholder="Condiciones médicas (ej. Diabetes, presión alta, embarazo)" class="w-full p-6 rounded-[30px] glass-input outline-none h-24 font-bold text-stone-900 text-sm transition-all border-none"></textarea>
+                
+                <textarea id="inputAccidentes" placeholder="¿Accidentes o cirugías previas?" class="w-full p-6 rounded-[30px] glass-input outline-none h-24 font-bold text-stone-900 text-sm transition-all border-none"></textarea>
+                
+                <textarea id="inputReferencia" placeholder="¿Algún trauma presente, rayos X recientes, o remitido por un médico?" class="w-full p-6 rounded-[30px] glass-input outline-none h-24 font-bold text-stone-900 text-sm transition-all border-none"></textarea>
+                
+                <div class="pt-4">
+                    <label id="formLabelZones" class="block text-[15px] font-bold text-stone-800 tracking-widest mb-4">Selecciona las zonas de dolor o tensión</label>
+                    <div class="grid grid-cols-2 gap-3" id="zonasCuerpo">
+                        <div class="relative">
+                            <input type="checkbox" id="z-cuello" value="cuello" class="zona-checkbox hidden">
+                            <label for="z-cuello" id="lbl-z-cuello" class="zona-label glass-input block text-center rounded-[20px] p-3 text-xs font-bold text-stone-900 border-none">Cuello / Cervical</label>
+                        </div>
+                        <div class="relative">
+                            <input type="checkbox" id="z-hombros" value="hombros" class="zona-checkbox hidden">
+                            <label for="z-hombros" id="lbl-z-hombros" class="zona-label glass-input block text-center rounded-[20px] p-3 text-xs font-bold text-stone-900 border-none">Hombros</label>
+                        </div>
+                        <div class="relative">
+                            <input type="checkbox" id="z-espalda-alta" value="espalda-alta" class="zona-checkbox hidden">
+                            <label for="z-espalda-alta" id="lbl-z-espalda-alta" class="zona-label glass-input block text-center rounded-[20px] p-3 text-xs font-bold text-stone-900 border-none">Parte superior de la espalda</label>
+                        </div>
+                        <div class="relative">
+                            <input type="checkbox" id="z-espalda-baja" value="espalda-baja" class="zona-checkbox hidden">
+                            <label for="z-espalda-baja" id="lbl-z-espalda-baja" class="zona-label glass-input block text-center rounded-[20px] p-3 text-xs font-bold text-stone-900 border-none">Espalda baja</label>
+                        </div>
+                        <div class="relative">
+                            <input type="checkbox" id="z-brazos" value="brazos" class="zona-checkbox hidden">
+                            <label for="z-brazos" id="lbl-z-brazos" class="zona-label glass-input block text-center rounded-[20px] p-3 text-xs font-bold text-stone-900 border-none">Brazos / Manos</label>
+                        </div>
+                        <div class="relative">
+                            <input type="checkbox" id="z-piernas" value="piernas" class="zona-checkbox hidden">
+                            <label for="z-piernas" id="lbl-z-piernas" class="zona-label glass-input block text-center rounded-[20px] p-3 text-xs font-bold text-stone-900 border-none">Piernas</label>
+                        </div>
+                        <div class="relative col-span-2">
+                            <input type="checkbox" id="z-pies" value="pies" class="zona-checkbox hidden">
+                            <label for="z-pies" id="lbl-z-pies" class="zona-label glass-input block text-center rounded-[20px] p-3 text-xs font-bold text-stone-900 border-none">Pies</label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="w-full flex justify-center pt-8">
+                    <button type="button" onclick="window.confirmarReserva(event)" id="submitBtn" class="animacion-premium w-full py-7 rounded-[35px] shadow-2xl text-xl flex items-center justify-center gap-4 tracking-[0.1em] font-black text-white bg-emerald-800/90 backdrop-blur-md hover:bg-emerald-900 active:scale-95 transition">
+                        <span id="submitBtnText">Reservar ahora</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="compromiso" class="py-16 container mx-auto px-4 md:px-6 max-w-4xl text-left">
+        <div class="glass-panel p-8 md:p-12 rounded-[60px] border-l-[15px] border-l-[#1a3a24]/80 shadow-2xl">
+            <h3 id="commitTitle" class="text-3xl text-stone-900 font-bold mb-10 italic fuente-elegante text-center">Nuestro compromiso mutuo</h3>
+            <div class="space-y-10 text-[14px] leading-loose font-bold tracking-widest text-stone-900">
+                <div>
+                    <h4 id="commitHead1" class="text-stone-900 text-[16px] mb-3 font-black">Aviso de <span class="num-limpio">24</span> horas</h4>
+                    <p id="commitDesc1">Por favor, notifica cualquier cambio con al menos <span class="num-limpio">24</span> horas de antelación para optimizar nuestras rutas de viaje y respetar el tiempo de otros clientes.</p>
+                </div>
+                <div>
+                    <h4 id="commitHead2" class="text-stone-900 text-[16px] mb-3 font-black">Solo para mujeres</h4>
+                    <p id="commitDesc2">Servicio exclusivo para mujeres para asegurar un entorno de absoluta seguridad, respeto y total comodidad.</p>
+                </div>
+                <div>
+                    <h4 id="commitHead3" class="text-stone-900 text-[16px] mb-3 font-black">Puntualidad</h4>
+                    <p id="commitDesc3">La hora exacta de llegada se confirmará por WhatsApp dependiendo del tráfico en la ciudad de Tampa.</p>
+                </div>
+                <div id="checkContainer" class="mt-10 p-6 glass-input rounded-[30px] transition-colors flex items-center gap-4 border-none">
+                    <input type="checkbox" id="checkMujer" class="w-7 h-7 accent-[#1a3a24] cursor-pointer">
+                    <label for="checkMujer" id="checkLabel" class="text-[14px] text-stone-900 font-bold leading-tight cursor-pointer">Soy mujer y acepto la política de cancelación de <span class="num-limpio">24</span>h.</label>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="glass-dark text-emerald-50 py-16 text-center text-[12px] tracking-[0.4em]">
+        <p id="footerText" class="num-limpio">Pura Vida Wellness • Kimberly Salazar • +1 (954) 226 1282 • Tampa</p>
+    </footer>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, getDoc, setDoc, updateDoc } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyDf8V0EkG8kQWAKvbc9uekqXYaRtzr8elc",
+            authDomain: "tica-natural-spa.firebaseapp.com",
+            projectId: "tica-natural-spa",
+            storageBucket: "tica-natural-spa.firebasestorage.app",
+            messagingSenderId: "441291257817",
+            appId: "1:441291257817:web:9b37ee0a611c9ef649cbc8"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+
+        let bookedCitas = [];
+        window.currentLang = 'en'; 
+        window.pendingMsg = "";
+        window.cuponAplicado = null; 
+
+        const translations = {
+            en: {
+                loginTitleModal: "Access your Profile",
+                loginDescModal: "Enter your phone number to start",
+                loginInputModal: "Phone Number",
+                loginBtnModal: "Enter",
+                loginWelcome: "Welcome to your sanctuary!",
+                formPlaceholderPhoneSearch: "Enter your Phone Number",
+                headerSubtitle: "Massage & Relaxation for Her",
+                heroNotice: "EXCLUSIVE SERVICE FOR WOMEN",
+                heroTitle: "Pure healing in the comfort of your home.",
+                heroDesc: "Transform your personal space into a sanctuary of deep peace with the professional touch of Costa Rica.",
+                heroBtn: "Book a Session",
+                bioSubtitle: "Licensed Massage Therapist • Therapeutic Relief Specialist",
+                bioQuote: '"My mission is to bring the relief and warmth of Costa Rica to your home, ensuring that every woman feels respected and renewed."',
+                bioBadge1: "Certified Specialist in Therapeutic Massage",
+                bioBadge2: "Professional Florida License",
+                servicesTitle: "Healing Rituals",
+                srv1Title: "Relaxing Feet",
+                srv1Unit: "/ <span class='num-limpio'>15</span> Min",
+                srv1Btn: "What's Included",
+                srv2Title: "Therapeutic Back",
+                srv2Unit: "/ <span class='num-limpio'>30</span> Min",
+                srv2Btn: "What's Included",
+                srv3Title: "Full Body",
+                srv3Unit: "/ <span class='num-limpio'>45</span> Min",
+                srv3Btn: "What's Included",
+                formTitle: "Schedule your Session",
+                phoneLoginTitle: "Access your Profile",
+                phoneLoginDesc: "Log in to your session using only your phone number",
+                btnIngresarText: "Enter",
+                formLabel1: "<span class='num-limpio'>1</span>. Choose your Therapy",
+                formOptDefault: "-- Select a massage --",
+                formOptPies: "Relaxing Feet ($30)",
+                formOptEspalda: "Therapeutic Back ($60)",
+                formOptCompleto: "Full Body Experience ($90)",
+                formLabelCupon: '<i class="fas fa-gift text-amber-500 mr-2"></i>Gift Card / Coupon',
+                btnCanjear: "Redeem",
+                cuponValid: "✅ Valid coupon applied! Service auto-selected.",
+                cuponInvalid: "❌ Invalid or non-existent code.",
+                cuponUsed: "⚠️ This coupon has already been used.",
+                cuponEmpty: "Please enter a code.",
+                formLabel2: "<span class='num-limpio'>2</span>. Select a Date",
+                formLabel3: "<span class='num-limpio'>3</span>. Choose Time (Auto-Block)",
+                formLabel4: "<span class='num-limpio'>4</span>. Personal Details",
+                formPlaceholderPhone: "Phone Number",
+                formPlaceholderName: "Full Name",
+                formPlaceholderAddr: "Exact Address (Tampa, FL)",
+                formLabel5: "<span class='num-limpio'>5</span>. Clinical & Medical History",
+                formDesc5: "Please provide details to ensure a safe and personalized therapy.",
+                formLabelDOB: "Date of Birth",
+                formPlaceholderCond: "Medical conditions (e.g., Diabetes, High Blood Pressure, Pregnancy)",
+                formPlaceholderAcc: "Previous accidents or surgeries?",
+                formPlaceholderRef: "Any present trauma, recent X-rays, or referred by a doctor?",
+                formLabelZones: "Select Pain or Tension Zones",
+                zCuello: "Neck / Cervical",
+                zHombros: "Shoulders",
+                zEspaldaAlta: "Upper Back",
+                zEspaldaBaja: "Lower Back",
+                zBrazos: "Arms / Hands",
+                zPiernas: "Legs",
+                zPies: "Feet",
+                submitBtnText: "BOOK NOW",
+                submitBtnWait: "SENDING...",
+                commitTitle: "Our Mutual Commitment",
+                commitHead1: "<span class='num-limpio'>24</span>-Hour Notice",
+                commitDesc1: "Please notify any changes at least <span class='num-limpio'>24</span> hours in advance to optimize our travel routes and respect other clients' time.",
+                commitHead2: "Women Only",
+                commitDesc2: "Exclusive service for women to ensure an environment of absolute safety, respect, and total comfort.",
+                commitHead3: "Punctuality",
+                commitDesc3: "The exact arrival time will be confirmed via WhatsApp depending on traffic in the city of Tampa.",
+                checkLabel: "I am a woman and I accept the <span class='num-limpio'>24</span>h cancellation policy.",
+                footerText: "PURA VIDA WELLNESS • Kimberly Salazar • +<span class='num-limpio'>1 (954) 226 1282</span> • Pura Vida",
+                modalTitle: "Service Details",
+                modalCloseBtn: "Understood",
+                slotWait: "Please select a date first",
+                alertMissing: "⚠️ Missing required information:",
+                alertCheck: "⚠️ Please accept the cancellation policy and women-only term at the bottom of the page.",
+                successTitle: "Appointment Requested!",
+                successChoice: "Choose how to contact Kimberly to confirm:",
+                btnSendWA: "Send via WhatsApp",
+                btnSendSMS: "Send via SMS",
+                successCalendarBtn: "Add to my Calendar",
+                successBackBtn: "Go Back",
+                welcomeTitleBack: "Welcome back!",
+                welcomeDescBack: "We are glad to see you again.",
+                welcomeTitleNew: "Welcome!",
+                welcomeDescNew: "Please complete your details below.",
+                reservaMsgHeader: "🌿 *PURA VIDA WELLNESS BOOKING & CLINICAL HISTORY* 🌿",
+                reservaName: "Name",
+                reservaPhone: "Phone",
+                reservaSrv: "Service",
+                reservaCuponText: "Gift Card / Coupon",
+                reservaDate: "Date",
+                reservaTime: "Time",
+                reservaAddr: "Address",
+                reservaAge: "Age",
+                reservaCond: "Medical Conditions",
+                reservaAcc: "Accidents/Surgeries",
+                reservaRef: "Trauma/Referrals",
+                reservaZones: "Pain Zones",
+                reservaCal: "Kimberly's Schedule Link",
+                reservaMap: "Location (Google Maps)",
+                historySearch: "Searching history...",
+                historyFound: "So good to see you again!",
+                historyNew: "Welcome to Pura Vida!",
+                historyError: "Connection error (You can continue)",
+                reminderText: "Remember you have an appointment scheduled for",
+                reminderAt: "at",
+                srvDetails: {
+                    pies: `<div class='text-left'><p class='font-bold text-lg mb-4 text-teal-800 uppercase tracking-tighter'>👣 Tired feet? You deserve a break! 💆‍♀️</p><p class='mb-4'>Immerse yourself in a deep relaxation experience.</p><ul class='space-y-3 mb-6'><li>✨ Reduce swelling and heaviness.</li><li>✨ Relieve tension built up from walking or standing.</li><li>✨ Improve circulation.</li></ul><p class='bg-teal-50 p-5 rounded-3xl font-bold text-teal-900 border border-teal-100 shadow-sm'>🌿 Includes: Essential oils and relaxing pressure techniques.</p></div>`,
+                    espalda: `<div class='text-left'><p class='font-bold text-lg mb-4 text-amber-800 uppercase tracking-tighter'>🌿 Therapeutic Back Relief</p><p class='mb-4'>Deep therapy focused on releasing the burden built up in the shoulders and spine:</p><ul class='space-y-3 mb-6'><li>✨ Eliminate muscle knots and contractures.</li><li>✨ Relieve tension from stress or bad posture.</li><li>✨ Restore mobility and flexibility.</li></ul><p class='bg-amber-50 p-5 rounded-3xl font-bold text-amber-900 border border-amber-100 shadow-sm'>🌿 Includes: Lavender aromatherapy and deep tissue techniques.</p></div>`,
+                    completo: `<div class='text-left'><p class='font-bold text-lg mb-4 text-pink-800 uppercase tracking-tighter italic'>✨ Disconnect and Renew: The Full Massage Experience ✨</p><p class='mb-6'>Do you feel the weight of the week on your shoulders? 🌿 Treat yourself to a moment of absolute peace.</p><p class='font-bold mb-3'>Benefits for you:</p><ul class='space-y-3 mb-6'><li>✅ Immediate relief from stress and anxiety.</li><li>✅ Improves blood circulation.</li><li>✅ Eliminates muscle knots and contractures.</li></ul><p class='bg-pink-50 p-5 rounded-3xl font-bold text-pink-900 text-center italic border border-pink-100 shadow-sm'>You deserve this rest!</p></div>`
+                }
+            },
+            es: {
+                loginTitleModal: "Accede a tu Perfil",
+                loginDescModal: "Ingresa tu número de teléfono para comenzar",
+                loginInputModal: "Número de Teléfono",
+                loginBtnModal: "Ingresar",
+                loginWelcome: "¡Te damos la bienvenida a tu santuario!",
+                formPlaceholderPhoneSearch: "Ingresa tu Número de Teléfono",
+                headerSubtitle: "Masaje & Relajación para Ella",
+                heroNotice: "SERVICIO EXCLUSIVO PARA MUJERES",
+                heroTitle: "Sanación pura en la comodidad de tu hogar.",
+                heroDesc: "Transforma tu espacio personal en un santuario de paz profunda con el toque profesional de Costa Rica.",
+                heroBtn: "Reservar Sesión",
+                bioSubtitle: "Masoterapeuta Licenciada • Especialista en Alivio Terapéutico",
+                bioQuote: '"Mi misión es llevar el alivio y la calidez de Costa Rica a tu hogar, asegurando que cada mujer se sienta respetada y renovada."',
+                bioBadge1: "Especialista Certificada en Masaje Terapéutico",
+                bioBadge2: "Licencia Profesional Florida",
+                servicesTitle: "Rituales de Sanación",
+                srv1Title: "Pies Relajantes",
+                srv1Unit: "/ <span class='num-limpio'>15</span> Min",
+                srv1Btn: "Qué incluye",
+                srv2Title: "Espalda Terapéutica",
+                srv2Unit: "/ <span class='num-limpio'>30</span> Min",
+                srv2Btn: "Qué incluye",
+                srv3Title: "Cuerpo Completo",
+                srv3Unit: "/ <span class='num-limpio'>45</span> Min",
+                srv3Btn: "Qué incluye",
+                formTitle: "Agenda tu Cita",
+                phoneLoginTitle: "Accede a tu Perfil",
+                phoneLoginDesc: "Ingresa a tu sesión solo con tu número de teléfono",
+                btnIngresarText: "Ingresar",
+                formLabel1: "<span class='num-limpio'>1</span>. Elige tu Terapia",
+                formOptDefault: "-- Selecciona un masaje --",
+                formOptPies: "Pies Relajantes ($30)",
+                formOptEspalda: "Espalda Terapéutica ($60)",
+                formOptCompleto: "Experiencia Cuerpo Completo ($90)",
+                formLabelCupon: '<i class="fas fa-gift text-amber-500 mr-2"></i>Tarjeta de Regalo / Cupón',
+                btnCanjear: "Canjear",
+                cuponValid: "✅ ¡Cupón válido! Servicio autoseleccionado.",
+                cuponInvalid: "❌ Código inválido o no existe.",
+                cuponUsed: "⚠️ Este cupón ya fue utilizado.",
+                cuponEmpty: "Por favor ingresa un código.",
+                formLabel2: "<span class='num-limpio'>2</span>. Selecciona la Fecha",
+                formLabel3: "<span class='num-limpio'>3</span>. Elige la Hora (Bloqueo Automático)",
+                formLabel4: "<span class='num-limpio'>4</span>. Detalles Personales",
+                formPlaceholderPhone: "Número de Teléfono",
+                formPlaceholderName: "Nombre Completo",
+                formPlaceholderAddr: "Dirección Exacta (Tampa, FL)",
+                formLabel5: "<span class='num-limpio'>5</span>. Historial Médico y Clínico",
+                formDesc5: "Por favor provee estos detalles para asegurar una terapia segura y personalizada.",
+                formLabelDOB: "Fecha de Nacimiento",
+                formPlaceholderCond: "Condiciones médicas (Ej. Diabetes, Presión Alta, Embarazo)",
+                formPlaceholderAcc: "¿Accidentes o cirugías anteriores?",
+                formPlaceholderRef: "¿Algún trauma presente, radiografías recientes o referido por un médico?",
+                formLabelZones: "Selecciona Zonas de Dolor o Tensión",
+                zCuello: "Cuello / Cervical",
+                zHombros: "Hombros",
+                zEspaldaAlta: "Espalda Alta",
+                zEspaldaBaja: "Espalda Baja",
+                zBrazos: "Brazos / Manos",
+                zPiernas: "Piernas",
+                zPies: "Pies",
+                submitBtnText: "RESERVAR",
+                submitBtnWait: "ENVIANDO...",
+                commitTitle: "Nuestro Compromiso Mutuo",
+                commitHead1: "Aviso de <span class='num-limpio'>24</span> Horas",
+                commitDesc1: "Notifica cualquier cambio con al menos <span class='num-limpio'>24</span>h de antelación para optimizar nuestras rutas de viaje e respetar el tiempo de otras clientas.",
+                commitHead2: "Solo Mujeres",
+                commitDesc2: "Servicio exclusivo para mujeres para garantizar un entorno de absoluta seguridad, respeto y confort total.",
+                commitHead3: "Puntualidad",
+                commitDesc3: "La hora exacta de llegada se confirmará vía WhatsApp según el tráfico de la ciudad de Tampa.",
+                checkLabel: "Soy mujer y acepto la política de cancelación de <span class='num-limpio'>24</span>h.",
+                footerText: "PURA VIDA WELLNESS • Kimberly Salazar • +<span class='num-limpio'>1 (954) 226 1282</span> • Pura Vida",
+                modalTitle: "Detalles del Servicio",
+                modalCloseBtn: "Entendido",
+                slotWait: "Elige una fecha primero",
+                alertMissing: "⚠️ Faltan datos obligatorios:",
+                alertCheck: "⚠️ Por favor acepta la política de cancelación y el término de solo mujeres al final de la página.",
+                successTitle: "¡Reserva Procesada!",
+                successChoice: "Elige cómo contactar a Kimberly para confirmar:",
+                btnSendWA: "Enviar por WhatsApp",
+                btnSendSMS: "Enviar por SMS",
+                successCalendarBtn: "Añadir a mi Calendario",
+                successBackBtn: "Volver",
+                welcomeTitleBack: "¡Bienvenida de nuevo!",
+                welcomeDescBack: "Nos alegra verte otra vez.",
+                welcomeTitleNew: "¡Bienvenida!",
+                welcomeDescNew: "Por favor completa tus datos en el formulario.",
+                reservaMsgHeader: "🌿 *RESERVA Y CLINICA PURA VIDA WELLNESS* 🌿",
+                reservaName: "Nombre",
+                reservaPhone: "Teléfono",
+                reservaSrv: "Servicio",
+                reservaCuponText: "Tarjeta de Regalo / Cupón",
+                reservaDate: "Fecha",
+                reservaTime: "Hora",
+                reservaAddr: "Dirección",
+                reservaAge: "Edad",
+                reservaCond: "Condiciones Médicas",
+                reservaAcc: "Accidentes/Cirugías",
+                reservaRef: "Traumas/Referencia",
+                reservaZones: "Zonas de Dolor",
+                reservaCal: "Link Agenda Kimberly",
+                reservaMap: "Ubicación (Google Maps)",
+                historySearch: "Buscando historial...",
+                historyFound: "¡Qué bueno verte de nuevo!",
+                historyNew: "¡Bienvenida a Pura Vida!",
+                historyError: "Error de conexión (Puedes continuar)",
+                reminderText: "Recuerda que tienes una cita programada para el",
+                reminderAt: "a las",
+                srvDetails: {
+                    pies: `<div class='text-left'><p class='font-bold text-lg mb-4 text-teal-800 uppercase tracking-tighter'>👣 ¿Pies cansados? ¡Mereces un respiro! 💆‍♀️</p><p class='mb-4'>Sumérgete en una experiencia de relajación profunda.</p><ul class='space-y-3 mb-6'><li>✨ Reducir la hinchazón y la pesadez.</li><li>✨ Aliviar la tensión acumulada.</li><li>✨ Mejorar la circulación.</li></ul><p class='bg-teal-50 p-5 rounded-3xl font-bold text-teal-900 border border-teal-100 shadow-sm'>🌿 Incluye: Aceites esenciales y técnicas de presión relajante.</p></div>`,
+                    espalda: `<div class='text-left'><p class='font-bold text-lg mb-4 text-amber-800 uppercase tracking-tighter'>🌿 Alivio Terapéutico de Espalda</p><p class='mb-4'>Terapia profunda enfocada en liberar la carga acumulada:</p><ul class='space-y-3 mb-6'><li>✨ Eliminar nudos musculares y contracturas.</li><li>✨ Aliviar tensiones por estrés o mala postura.</li><li>✨ Restaurar la movilidad.</li></ul><p class='bg-amber-50 p-5 rounded-3xl font-bold text-amber-900 border border-amber-100 shadow-sm'>🌿 Incluye: Aromaterapia de lavanda y técnicas de tejido profundo.</p></div>`,
+                    completo: `<div class='text-left'><p class='font-bold text-lg mb-4 text-pink-800 uppercase tracking-tighter italic'>✨ Desconecta y Renueva: Masaje Total ✨</p><p class='mb-6'>¿Sientes el peso de la semana en tus hombros? 🌿 Regálate un momento de paz absoluta.</p><p class='font-bold mb-3'>Beneficios para ti:</p><ul class='space-y-3 mb-6'><li>✅ Alivio inmediato del estrés y ansiedad.</li><li>✅ Mejora la circulación sanguínea.</li><li>✅ Elimina nudos y contracturas musculares.</li></ul><p class='bg-pink-50 p-5 rounded-3xl font-bold text-pink-900 text-center italic border border-pink-100 shadow-sm'>¡Te mereces este descanso!</p></div>`
+                }
+            }
+        };
+
+        window.cerrarLogin = () => {
+            document.getElementById('loginModal').style.opacity = '0';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => {
+                document.getElementById('loginModal').style.display = 'none';
+                const msgCont = document.getElementById('msgHistorialLogin');
+                if(msgCont) msgCont.style.display = 'none';
+            }, 300);
+        };
+
+        window.accesoInicial = async () => {
+            const telInput = document.getElementById('inputTelefonoLogin').value;
+            const telefono = telInput.replace(/\D/g, '');
+            const msgCont = document.getElementById('msgHistorialLogin');
+            const msgText = document.getElementById('msgTextLogin');
+            const icon = document.getElementById('msgIconLogin');
+            const t = translations[window.currentLang];
+
+            if (telefono.length < 8) return;
+
+            msgCont.classList.remove('hidden');
+            msgCont.style.cssText = "display: flex; flex-direction: column; align-items: center; text-align: center; padding: 2rem; margin-top: 1.5rem; border-radius: 1.5rem; gap: 0.75rem; background: rgba(255, 255, 255, 0.45); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.5); box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); transition: all 0.4s ease;";
+            
+            icon.className = "fas fa-spinner fa-spin";
+            icon.style.fontSize = "2.5rem";
+            icon.style.color = "#3b82f6"; 
+            msgText.innerText = t.historySearch;
+            msgText.style.fontSize = "1.2rem";
+            msgText.style.color = "#1f2937";
+
+            try {
+                const docSnap = await getDoc(doc(db, 'clients', telefono));
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    const hoyObj = new Date();
+                    const offset = hoyObj.getTimezoneOffset() * 60000;
+                    const hoyStr = new Date(hoyObj.getTime() - offset).toISOString().split('T')[0];
+                    
+                    const citasCliente = bookedCitas.filter(c => {
+                        const num = String(c.telefono || '').replace(/\D/g, '');
+                        return num === telefono && c.fecha >= hoyStr;
+                    });
+                    citasCliente.sort((a, b) => a.fecha.localeCompare(b.fecha)); 
+                    const proximaCita = citasCliente.length > 0 ? citasCliente[0] : null;
+
+                    let nombreCorto = data.nombre ? data.nombre.split(' ')[0] : '';
+                    let baseMsg = `${t.historyFound} ${nombreCorto}`;
+
+                    if (proximaCita) {
+                        msgText.innerHTML = `<span style="font-size:1.3rem; font-family:'Cormorant Garamond', serif; color:#1c1917;">${baseMsg} 💖</span><br><span style="display:block; margin-top:0.75rem; font-size:1.05rem; color:#1c1917; font-family:'Cormorant Garamond', serif; font-weight:600; line-height:1.5;">${t.reminderText}<br><b style="color:#022c22; font-size:1.3rem; font-family:'Lato',sans-serif;">${proximaCita.fecha}</b> ${t.reminderAt} <b style="color:#022c22; font-size:1.3rem; font-family:'Lato',sans-serif;">${proximaCita.hora}</b></span>`;
+                        icon.className = "fas fa-calendar-check";
+                        icon.style.color = "#047857"; 
+                        icon.style.fontSize = "3.5rem";
+                    } else {
+                        msgText.innerHTML = `<span style="font-size:1.3rem; font-family:'Cormorant Garamond', serif; color:#1c1917;">${baseMsg} 💖</span>`;
+                        icon.className = "fas fa-heart";
+                        icon.style.color = "#ec4899"; 
+                        icon.style.fontSize = "3.5rem";
+                    }
+                    
+                    document.getElementById('inputTelefono').value = telInput;
+                    document.getElementById('inputNombre').value = data.nombre || '';
+                    document.getElementById('inputDireccion').value = data.direccion || '';
+                    document.getElementById('inputFechaNacimiento').value = data.fechaNacimiento || '';
+                    document.getElementById('inputCondiciones').value = data.condicionesMedicas || '';
+                    document.getElementById('inputAccidentes').value = data.accidentes || '';
+                    document.getElementById('inputReferencia').value = data.referenciaYTraumas || '';
+                    
+                    window.calcularEdad();
+
+                    document.querySelectorAll('.zona-checkbox').forEach(cb => {
+                        if(data.zonasRaw) {
+                            cb.checked = data.zonasRaw.includes(cb.value);
+                        } else if (data.zonasDolor) {
+                            const labelText = document.getElementById(`lbl-${cb.id}`).innerText;
+                            cb.checked = data.zonasDolor.includes(labelText);
+                        }
+                    });
+                    document.getElementById('checkMujer').checked = true;
+                    setTimeout(window.cerrarLogin, proximaCita ? 7000 : 4000);
+                } else {
+                    msgText.innerHTML = `<span style="font-size:1.3rem; font-family:'Cormorant Garamond', serif; color:#1c1917;">${t.historyNew} ✨</span>`;
+                    icon.className = "fas fa-sparkles";
+                    icon.style.color = "#d97706"; 
+                    icon.style.fontSize = "3.5rem";
+                    document.getElementById('inputTelefono').value = telInput;
+                    setTimeout(window.cerrarLogin, 4000);
+                }
+            } catch (e) {
+                console.error(e);
+                icon.className = "fas fa-exclamation-triangle";
+                icon.style.color = "#ef4444"; 
+                icon.style.fontSize = "3rem";
+                msgText.innerText = t.historyError;
+                setTimeout(window.cerrarLogin, 4000);
+            }
+        };
+
+        window.setLanguage = (lang) => {
+            window.currentLang = lang;
+            const t = translations[lang];
+
+            if(document.getElementById('btn-en')) document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+            if(document.getElementById('btn-es')) document.getElementById('btn-es').classList.toggle('active', lang === 'es');
+
+            if(document.getElementById('loginActionText')) document.getElementById('loginActionText').innerHTML = t.loginTitleModal;
+            if(document.getElementById('loginActionSubtitle')) document.getElementById('loginActionSubtitle').innerHTML = t.loginDescModal;
+            if(document.getElementById('loginWelcomeMessage')) document.getElementById('loginWelcomeMessage').innerHTML = t.loginWelcome;
+            if(document.getElementById('inputTelefonoLogin')) document.getElementById('inputTelefonoLogin').placeholder = t.loginInputModal;
+            if(document.getElementById('btnIngresarModal')) document.getElementById('btnIngresarModal').innerHTML = t.loginBtnModal;
+            if(document.getElementById('msgTextLogin')) document.getElementById('msgTextLogin').innerHTML = t.historySearch;
+
+            if(document.getElementById('headerSubtitle')) document.getElementById('headerSubtitle').innerHTML = t.headerSubtitle;
+            if(document.getElementById('heroNotice')) document.getElementById('heroNotice').innerHTML = t.heroNotice;
+            if(document.getElementById('heroTitle')) document.getElementById('heroTitle').innerHTML = t.heroTitle;
+            if(document.getElementById('heroDesc')) document.getElementById('heroDesc').innerHTML = t.heroDesc;
+            if(document.getElementById('heroBtn')) document.getElementById('heroBtn').innerHTML = t.heroBtn;
+            if(document.getElementById('bioSubtitle')) document.getElementById('bioSubtitle').innerHTML = t.bioSubtitle;
+            if(document.getElementById('bioQuote')) document.getElementById('bioQuote').innerHTML = t.bioQuote;
+            if(document.getElementById('bioBadge1')) document.getElementById('bioBadge1').innerHTML = t.bioBadge1;
+            if(document.getElementById('bioBadge2')) document.getElementById('bioBadge2').innerHTML = t.bioBadge2;
+            if(document.getElementById('servicesTitle')) document.getElementById('servicesTitle').innerHTML = t.servicesTitle;
+            if(document.getElementById('srv1Title')) document.getElementById('srv1Title').innerHTML = t.srv1Title;
+            if(document.getElementById('srv1Unit')) document.getElementById('srv1Unit').innerHTML = t.srv1Unit;
+            if(document.getElementById('srv1Btn')) document.getElementById('srv1Btn').innerHTML = t.srv1Btn;
+            if(document.getElementById('srv2Title')) document.getElementById('srv2Title').innerHTML = t.srv2Title;
+            if(document.getElementById('srv2Unit')) document.getElementById('srv2Unit').innerHTML = t.srv2Unit;
+            if(document.getElementById('srv2Btn')) document.getElementById('srv2Btn').innerHTML = t.srv2Btn;
+            if(document.getElementById('srv3Title')) document.getElementById('srv3Title').innerHTML = t.srv3Title;
+            if(document.getElementById('srv3Unit')) document.getElementById('srv3Unit').innerHTML = t.srv3Unit;
+            if(document.getElementById('srv3Btn')) document.getElementById('srv3Btn').innerHTML = t.srv3Btn;
+            if(document.getElementById('formTitle')) document.getElementById('formTitle').innerHTML = t.formTitle;
+            
+            if(document.getElementById('phoneLoginTitle')){
+                document.getElementById('phoneLoginTitle').innerHTML = t.phoneLoginTitle;
+                document.getElementById('phoneLoginDesc').innerHTML = t.phoneLoginDesc;
+                document.getElementById('btnIngresarText').innerHTML = t.btnIngresarText;
+                if(document.getElementById('inputTelefonoBuscador')) document.getElementById('inputTelefonoBuscador').placeholder = t.formPlaceholderPhoneSearch;
+            }
+            
+            if(document.getElementById('formLabel1')) document.getElementById('formLabel1').innerHTML = t.formLabel1;
+            if(document.getElementById('formLabel2')) document.getElementById('formLabel2').innerHTML = t.formLabel2;
+            if(document.getElementById('formLabel3')) document.getElementById('formLabel3').innerHTML = t.formLabel3;
+            if(document.getElementById('formLabel4')) document.getElementById('formLabel4').innerHTML = t.formLabel4;
+            if(document.getElementById('formLabel5')) document.getElementById('formLabel5').innerHTML = t.formLabel5;
+            
+            if(document.getElementById('formLabelCupon')) document.getElementById('formLabelCupon').innerHTML = t.formLabelCupon;
+            if(document.getElementById('btnCanjear')) document.getElementById('btnCanjear').innerHTML = t.btnCanjear;
+
+            if(document.getElementById('inputTelefono')) document.getElementById('inputTelefono').placeholder = t.formPlaceholderPhone;
+            if(document.getElementById('inputNombre')) document.getElementById('inputNombre').placeholder = t.formPlaceholderName;
+            if(document.getElementById('inputDireccion')) document.getElementById('inputDireccion').placeholder = t.formPlaceholderAddr;
+            
+            if(document.getElementById('formDesc5')) document.getElementById('formDesc5').innerHTML = t.formDesc5;
+            if(document.getElementById('formLabelDOB')) document.getElementById('formLabelDOB').innerHTML = t.formLabelDOB;
+            if(document.getElementById('inputCondiciones')) document.getElementById('inputCondiciones').placeholder = t.formPlaceholderCond;
+            if(document.getElementById('inputAccidentes')) document.getElementById('inputAccidentes').placeholder = t.formPlaceholderAcc;
+            if(document.getElementById('inputReferencia')) document.getElementById('inputReferencia').placeholder = t.formPlaceholderRef;
+            if(document.getElementById('formLabelZones')) document.getElementById('formLabelZones').innerHTML = t.formLabelZones;
+            
+            if(document.getElementById('lbl-z-cuello')) document.getElementById('lbl-z-cuello').innerHTML = t.zCuello;
+            if(document.getElementById('lbl-z-hombros')) document.getElementById('lbl-z-hombros').innerHTML = t.zHombros;
+            if(document.getElementById('lbl-z-espalda-alta')) document.getElementById('lbl-z-espalda-alta').innerHTML = t.zEspaldaAlta;
+            if(document.getElementById('lbl-z-espalda-baja')) document.getElementById('lbl-z-espalda-baja').innerHTML = t.zEspaldaBaja;
+            if(document.getElementById('lbl-z-brazos')) document.getElementById('lbl-z-brazos').innerHTML = t.zBrazos;
+            if(document.getElementById('lbl-z-piernas')) document.getElementById('lbl-z-piernas').innerHTML = t.zPiernas;
+            if(document.getElementById('lbl-z-pies')) document.getElementById('lbl-z-pies').innerHTML = t.zPies;
+
+            if(document.getElementById('submitBtnText')) document.getElementById('submitBtnText').innerHTML = t.submitBtnText;
+            if(document.getElementById('commitTitle')) document.getElementById('commitTitle').innerHTML = t.commitTitle;
+            if(document.getElementById('commitHead1')) document.getElementById('commitHead1').innerHTML = t.commitHead1;
+            if(document.getElementById('commitDesc1')) document.getElementById('commitDesc1').innerHTML = t.commitDesc1;
+            if(document.getElementById('commitHead2')) document.getElementById('commitHead2').innerHTML = t.commitHead2;
+            if(document.getElementById('commitDesc2')) document.getElementById('commitDesc2').innerHTML = t.commitDesc2;
+            if(document.getElementById('commitHead3')) document.getElementById('commitHead3').innerHTML = t.commitHead3;
+            if(document.getElementById('commitDesc3')) document.getElementById('commitDesc3').innerHTML = t.commitDesc3;
+            if(document.getElementById('checkLabel')) document.getElementById('checkLabel').innerHTML = t.checkLabel;
+            if(document.getElementById('footerText')) document.getElementById('footerText').innerHTML = t.footerText;
+            if(document.getElementById('modalTitle')) document.getElementById('modalTitle').innerHTML = t.modalTitle;
+            if(document.getElementById('modalCloseBtn')) document.getElementById('modalCloseBtn').innerHTML = t.modalCloseBtn;
+            
+            if(document.getElementById('successTitle')) document.getElementById('successTitle').innerHTML = t.successTitle;
+            if(document.getElementById('successDesc')) document.getElementById('successDesc').innerHTML = t.successChoice;
+            if(document.getElementById('btnSendWA')) document.getElementById('btnSendWA').innerHTML = `<i class="fab fa-whatsapp text-2xl"></i> ${t.btnSendWA}`;
+            if(document.getElementById('btnSendSMS')) document.getElementById('btnSendSMS').innerHTML = `<i class="fas fa-comment-sms text-2xl"></i> ${t.btnSendSMS}`;
+            if(document.getElementById('successCalendarBtn')) document.getElementById('successCalendarBtn').innerHTML = t.successCalendarBtn;
+            if(document.getElementById('successBackBtn')) document.getElementById('successBackBtn').innerHTML = t.successBackBtn;
+
+            const srvSelect = document.getElementById('inputServicio');
+            if(srvSelect && srvSelect.options.length > 0){
+                srvSelect.options[0].innerText = t.formOptDefault;
+                srvSelect.options[1].innerText = t.formOptPies;
+                srvSelect.options[2].innerText = t.formOptEspalda;
+                srvSelect.options[3].innerText = t.formOptCompleto;
+            }
+
+            window.calcularEdad(); 
+            window.renderSlots(); 
+        };
+
+        // LÓGICA ACTUALIZADA DE CUPONES
+        window.validarCupon = async () => {
+            const inputEl = document.getElementById('inputCupon');
+            const msgEl = document.getElementById('msgCupon');
+            const btnEl = document.getElementById('btnCanjear');
+            const selectSrv = document.getElementById('inputServicio');
+            const t = translations[window.currentLang];
+            
+            if (!inputEl || !msgEl || !btnEl) return;
+
+            const codigo = inputEl.value.trim().toUpperCase();
+            
+            if (!codigo) {
+                msgEl.innerText = t.cuponEmpty;
+                msgEl.className = "text-xs font-bold mt-3 text-amber-500 block";
+                return;
+            }
+
+            const originalBtnText = btnEl.innerHTML;
+            btnEl.innerHTML = `<i class="fas fa-spinner fa-spin"></i>`;
+            btnEl.disabled = true;
+
+            try {
+                const cuponRef = doc(db, 'cupones', codigo);
+                const docSnap = await getDoc(cuponRef);
+
+                if (docSnap.exists()) {
+                    const data = docSnap.data();
+                    if (data.usado === true) {
+                        msgEl.innerText = t.cuponUsed;
+                        msgEl.className = "text-xs font-bold mt-3 text-red-500 block";
+                        window.cuponAplicado = null;
+                    } else {
+                        msgEl.innerText = t.cuponValid;
+                        msgEl.className = "text-xs font-bold mt-3 text-emerald-600 block";
+                        window.cuponAplicado = codigo; 
+                        inputEl.disabled = true; 
+                        btnEl.style.display = 'none'; 
+
+                        // LÓGICA NUEVA: SELECCIONAR Y BLOQUEAR EL SERVICIO
+                        if (data.tipoServicio && selectSrv) {
+                            selectSrv.value = data.tipoServicio;
+                            // Usamos pointerEvents none para bloquearlo pero permitir que el valor se lea al enviar
+                            selectSrv.style.pointerEvents = 'none';
+                            selectSrv.classList.add('opacity-70', 'bg-stone-200');
+                            window.renderSlots(); // Refrescar los slots
+                        }
+                    }
+                } else {
+                    msgEl.innerText = t.cuponInvalid;
+                    msgEl.className = "text-xs font-bold mt-3 text-red-500 block";
+                    window.cuponAplicado = null;
+                }
+            } catch (error) {
+                console.error("Error validando cupón:", error);
+                msgEl.innerText = "Error de conexión.";
+                msgEl.className = "text-xs font-bold mt-3 text-red-500 block";
+            }
+
+            btnEl.innerHTML = originalBtnText;
+            btnEl.disabled = false;
+        };
+
+        try {
+            onSnapshot(collection(db, 'bookings'), (snap) => {
+                bookedCitas = snap.docs.map(doc => doc.data());
+                window.renderSlots();
+            }, (error) => {
+                console.error("Error cargando agenda:", error);
+            });
+        } catch(e) { console.log(e); }
+
+        window.triggerRender = () => { window.renderSlots(); };
+
+        window.renderSlots = () => {
+            const previousSelection = window.horaSeleccionada;
+            window.horaSeleccionada = null; 
+            
+            const container = document.getElementById('timeSlots');
+            const fecha = document.getElementById('inputFecha') ? document.getElementById('inputFecha').value : '';
+            
+            if (!container) return;
+
+            if (!fecha) {
+                container.innerHTML = `<p class='col-span-3 text-center text-[9px] text-stone-400 py-6 uppercase font-bold tracking-widest italic'>${translations[window.currentLang].slotWait}</p>`;
+                return;
+            }
+
+            const hoyObj = new Date();
+            const offset = hoyObj.getTimezoneOffset() * 60000;
+            const hoyStr = new Date(hoyObj.getTime() - offset).toISOString().split('T')[0];
+            const isToday = fecha === hoyStr;
+            const unaHoraDespues = new Date(hoyObj.getTime() + 60 * 60 * 1000); 
+
+            const slots = ["08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM", "06:00 PM"];
+            const blockedSet = new Set();
+            
+            bookedCitas.filter(c => c.fecha === fecha).forEach(c => {
+                blockedSet.add(c.hora);
+            });
+            
+            container.innerHTML = "";
+            slots.forEach(time => {
+                let isPast = false;
+                if (isToday) {
+                    const [timeStr, modifier] = time.split(' ');
+                    let [hours, minutes] = timeStr.split(':');
+                    hours = parseInt(hours, 10);
+                    if (hours === 12 && modifier === 'AM') hours = 0;
+                    if (modifier === 'PM' && hours < 12) hours += 12;
+
+                    const slotDate = new Date();
+                    slotDate.setHours(hours, parseInt(minutes, 10), 0, 0);
+
+                    if (slotDate < unaHoraDespues) {
+                        isPast = true;
+                    }
+                }
+
+                const isBlocked = blockedSet.has(time) || isPast;
+                const btn = document.createElement('button');
+                btn.className = `time-slot p-2 rounded-2xl ${isBlocked ? 'blocked' : 'bg-white shadow-md'}`;
+                btn.innerText = time;
+                btn.disabled = isBlocked;
+                
+                if (!isBlocked) {
+                    if (time === previousSelection) {
+                        btn.classList.add('selected');
+                        window.horaSeleccionada = time;
+                    }
+
+                    btn.onclick = () => {
+                        document.querySelectorAll('.time-slot').forEach(b => b.classList.remove('selected'));
+                        btn.classList.add('selected');
+                        window.horaSeleccionada = time;
+                    };
+                }
+                container.appendChild(btn);
+            });
+        };
+
+        window.calcularEdad = () => {
+            const dobInput = document.getElementById('inputFechaNacimiento');
+            const display = document.getElementById('displayEdad');
+            if (!dobInput || !dobInput.value) {
+                if(display) { display.innerText = ''; display.classList.add('hidden'); }
+                return '';
+            }
+            
+            const birthDate = new Date(dobInput.value);
+            const birthDateUTC = new Date(birthDate.getTime() + birthDate.getTimezoneOffset() * 60000);
+            
+            const today = new Date();
+            let years = today.getFullYear() - birthDateUTC.getFullYear();
+            let months = today.getMonth() - birthDateUTC.getMonth();
+            
+            if (months < 0 || (months === 0 && today.getDate() < birthDateUTC.getDate())) {
+                years--;
+                months += 12;
+            }
+            if (today.getDate() < birthDateUTC.getDate()) {
+                months--;
+                if(months < 0) {
+                    months = 11;
+                }
+            }
+            
+            const lang = window.currentLang || 'es';
+            const yearStr = lang === 'es' ? 'años' : 'years';
+            const monthStr = lang === 'es' ? 'meses' : 'months';
+            
+            const result = `${years} ${yearStr}, ${months} ${monthStr}`;
+            if(display) {
+                display.innerHTML = `<span class='num-limpio'>${result}</span>`;
+                display.classList.remove('hidden');
+            }
+            return result;
+        };
+
+        window.enviarReserva = (method) => {
+            if(method === 'wa') {
+                window.location.href = `https://wa.me/19542261282?text=${encodeURIComponent(window.pendingMsg)}`;
+            } else {
+                window.location.href = `sms:+19542261282?body=${encodeURIComponent(window.pendingMsg)}`;
+            }
+            
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        };
+
+        window.confirmarReserva = () => {
+            const t = translations[window.currentLang];
+            const checkAcepto = document.getElementById('checkMujer');
+            const checkContainer = document.getElementById('checkContainer');
+
+            if (!checkAcepto || !checkAcepto.checked) {
+                if(checkContainer) checkContainer.classList.add('bg-red-50', 'border-red-400');
+                if(document.getElementById('compromiso')) document.getElementById('compromiso').scrollIntoView({ behavior: 'smooth' });
+                alert(t.alertCheck.replace(/<[^>]*>?/gm, '')); 
+                return;
+            } else {
+                if(checkContainer) checkContainer.classList.remove('bg-red-50', 'border-red-400');
+            }
+
+            const inputNombre = document.getElementById('inputNombre');
+            const inputTelefono = document.getElementById('inputTelefono');
+            const inputDireccion = document.getElementById('inputDireccion');
+            const inputFechaNac = document.getElementById('inputFechaNacimiento');
+            const inputFecha = document.getElementById('inputFecha');
+            const inputServicio = document.getElementById('inputServicio');
+            
+            const condEl = document.getElementById('inputCondiciones');
+            const accEl = document.getElementById('inputAccidentes');
+            const refEl = document.getElementById('inputReferencia');
+
+            const valCondiciones = condEl && condEl.value.trim() ? condEl.value.trim() : 'Ninguna';
+            const valAccidentes = accEl && accEl.value.trim() ? accEl.value.trim() : 'Ninguno';
+            const valReferencia = refEl && refEl.value.trim() ? refEl.value.trim() : 'No';
+            
+            const zonasText = [];
+            const zonasVal = [];
+            document.querySelectorAll('.zona-checkbox:checked').forEach(cb => {
+                const labelEl = document.getElementById(`lbl-${cb.id}`);
+                if(labelEl) zonasText.push(labelEl.innerText);
+                zonasVal.push(cb.value);
+            });
+            const valZonas = zonasText.length > 0 ? zonasText.join(', ') : 'Ninguna';
+            const valZonasRaw = zonasVal.join(',');
+
+            const nombreVal = inputNombre ? inputNombre.value.trim() : '';
+            const telefonoDisplay = inputTelefono ? inputTelefono.value.trim() : '';
+            const telefonoVal = telefonoDisplay.replace(/\D/g, ''); 
+            
+            const direccionVal = inputDireccion ? inputDireccion.value.trim() : '';
+            const fechaNacVal = inputFechaNac ? inputFechaNac.value : '';
+            const edadCalculada = window.calcularEdad();
+
+            const fechaVal = inputFecha ? inputFecha.value : '';
+            const servicioVal = inputServicio ? inputServicio.value : '';
+            const horaConfirmada = window.horaSeleccionada;
+
+            let hasError = false;
+            let missingFields = [];
+
+            if (!telefonoVal) { if(inputTelefono) inputTelefono.classList.add('border-red-500', 'bg-red-50'); hasError = true; missingFields.push(t.reservaPhone); } else { if(inputTelefono) inputTelefono.classList.remove('border-red-500', 'bg-red-50'); }
+            if (!servicioVal) { if(inputServicio) inputServicio.classList.add('input-error'); hasError = true; missingFields.push(t.reservaSrv); } else { if(inputServicio) inputServicio.classList.remove('input-error'); }
+            if (!fechaVal) { if(inputFecha) inputFecha.classList.add('input-error'); hasError = true; missingFields.push(t.reservaDate); } else { if(inputFecha) inputFecha.classList.remove('input-error'); }
+            if (!nombreVal) { if(inputNombre) inputNombre.classList.add('input-error'); hasError = true; missingFields.push(t.reservaName); } else { if(inputNombre) inputNombre.classList.remove('input-error'); }
+            if (!direccionVal) { if(inputDireccion) inputDireccion.classList.add('input-error'); hasError = true; missingFields.push(t.reservaAddr); } else { if(inputDireccion) inputDireccion.classList.remove('input-error'); }
+            if (!fechaNacVal) { if(inputFechaNac) inputFechaNac.classList.add('input-error'); hasError = true; missingFields.push(t.reservaAge); } else { if(inputFechaNac) inputFechaNac.classList.remove('input-error'); }
+            
+            if (!horaConfirmada) { hasError = true; missingFields.push(t.reservaTime); }
+
+            if (hasError) {
+                alert(t.alertMissing.replace(/<[^>]*>?/gm, '') + "\n- " + missingFields.join("\n- "));
+                const firstError = document.querySelector('.input-error, .border-red-500');
+                if(firstError) firstError.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                return;
+            }
+
+            const servText = inputServicio.options[inputServicio.selectedIndex].text;
+            
+            const submitBtn = document.getElementById('submitBtn');
+            const originalBtnHtml = submitBtn ? submitBtn.innerHTML : '';
+            if(submitBtn) submitBtn.innerHTML = `<i class="fas fa-spinner fa-spin text-3xl"></i> <span class="tracking-[0.2em] font-black">${t.submitBtnWait}</span>`;
+
+            const abrirModalsEnvio = () => {
+                const fechaLimpia = fechaVal.replace(/-/g, '');
+                const horaMap = { "08:00 AM": "0800", "09:00 AM": "0900", "10:00 AM": "1000", "11:00 AM": "1100", "12:00 PM": "1200", "01:00 PM": "1300", "02:00 PM": "1400", "03:00 PM": "1500", "04:00 PM": "1600", "05:00 PM": "1700", "06:00 PM": "1800" };
+                const inicio = `${fechaLimpia}T${horaMap[horaConfirmada]}00`;
+                const gCal = `https://www.google.com/calendar/render?action=TEMPLATE&text=${encodeURIComponent('Pura Vida Wellness: ' + nombreVal)}&dates=${inicio}/${inicio}&details=${encodeURIComponent('Servicio: ' + servText + '\nTeléfono: ' + telefonoDisplay)}&location=${encodeURIComponent(direccionVal)}`;
+                
+                const mapUrl = `http://googleusercontent.com/maps.google.com/2{encodeURIComponent(direccionVal)}`;
+                
+                let textoCupon = window.cuponAplicado ? `\n*${t.reservaCuponText}:* ${window.cuponAplicado} ✅` : "";
+
+                const msg = `${t.reservaMsgHeader.replace(/<[^>]*>?/gm, '')}\n\n*${t.reservaName}:* ${nombreVal}\n*${t.reservaPhone}:* ${telefonoDisplay}\n*${t.reservaSrv}:* ${servText}${textoCupon}\n*${t.reservaDate}:* ${fechaVal}\n*${t.reservaTime}:* ${horaConfirmada}\n*${t.reservaAddr}:* ${direccionVal}\n\n🏥 *HISTORIAL CLÍNICO*\n*${t.reservaAge}:* ${edadCalculada.replace(/<[^>]*>?/gm, '')} (${fechaNacVal})\n*${t.reservaCond}:* ${valCondiciones}\n*${t.reservaAcc}:* ${valAccidentes}\n*${t.reservaRef}:* ${valReferencia}\n*${t.reservaZones}:* ${valZonas}\n\n📍 *${t.reservaMap}:* \n${mapUrl}`;
+                
+                window.pendingMsg = msg;
+                if(document.getElementById('successModal')) document.getElementById('successModal').style.display = "flex";
+                if(document.getElementById('btnGoogleCalendar')) document.getElementById('btnGoogleCalendar').href = gCal;
+                if(submitBtn) submitBtn.innerHTML = originalBtnHtml;
+            };
+
+            const guardarEnBD = async () => {
+                try {
+                    await addDoc(collection(db, 'bookings'), {
+                        nombre: nombreVal, telefono: telefonoDisplay, fecha: fechaVal, hora: horaConfirmada, tipo: servicioVal, direccion: direccionVal, fechaNacimiento: fechaNacVal, edadCalculada: edadCalculada.replace(/<[^>]*>?/gm, ''), condicionesMedicas: valCondiciones, accidentes: valAccidentes, referenciaYTraumas: valReferencia, zonasDolor: valZonas, cupon: window.cuponAplicado, timestamp: new Date().toISOString()
+                    });
+
+                    await setDoc(doc(db, 'clients', telefonoVal), {
+                        nombre: nombreVal, direccion: direccionVal, fechaNacimiento: fechaNacVal, condicionesMedicas: valCondiciones, accidentes: valAccidentes, referenciaYTraumas: valReferencia, zonasDolor: valZonas, zonasRaw: valZonasRaw, ultimaVisita: new Date().toISOString()
+                    }, { merge: true });
+                    
+                    if (window.cuponAplicado) {
+                        await updateDoc(doc(db, 'cupones', window.cuponAplicado), {
+                            usado: true,
+                            fechaUso: new Date().toISOString(),
+                            usadoPorTel: telefonoVal,
+                            usadoPorNombre: nombreVal
+                        });
+                    }
+
+                    abrirModalsEnvio();
+
+                } catch (err) {
+                    console.error("Error guardando en BD:", err);
+                    alert("⚠️ ATENCIÓN (Error al Guardar): \n\n" + err.message + "\n\nSe abrirá de todas formas la ventana para enviar.");
+                    abrirModalsEnvio();
+                }
+            };
+
+            guardarEnBD();
+        };
+
+        window.openModal = (service) => {
+            if(document.getElementById('modalBody')) document.getElementById('modalBody').innerHTML = translations[window.currentLang].srvDetails[service];
+            if(document.getElementById('serviceModal')) document.getElementById('serviceModal').style.display = "flex";
+            document.body.style.overflow = "hidden";
+        };
+
+        window.closeModal = () => { 
+            if(document.getElementById('serviceModal')) document.getElementById('serviceModal').style.display = "none"; 
+            document.body.style.overflow = "auto"; 
+        };
+
+        window.onload = () => { 
+            setLanguage('en'); 
+            const hoyObj = new Date();
+            const offset = hoyObj.getTimezoneOffset() * 60000;
+            const fechaLocal = new Date(hoyObj.getTime() - offset).toISOString().split('T')[0];
+            if(document.getElementById('inputFecha')) document.getElementById('inputFecha').min = fechaLocal;
+        };
+
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const wrapper = document.getElementById('sliderWrapper');
+
+        function nextSlide() {
+            if(!wrapper) return;
+            currentSlide = (currentSlide + 1) % slides.length;
+            wrapper.style.transform = `translateX(-${currentSlide * 100}%)`;
+        }
+
+        setInterval(nextSlide, 2500);
+
+        window.ampliarImagen = (src) => {
+            const lb = document.getElementById('lightbox');
+            const img = document.getElementById('imgAmpliada');
+            img.src = src;
+            lb.style.display = 'flex';
+        };
+    </script>
+</body>
+</html>
