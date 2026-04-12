@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Admin | Pura Vida Wellness</title>
+    
+    <link rel="icon" type="image/x-icon" href="favicon.ico">
+    <link rel="icon" type="image/png" sizes="96x96" href="favicon-96x96.png">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="manifest" href="site.webmanifest">
+    
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Admin">
+    <meta name="application-name" content="Admin">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1a3a24">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@400;700;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { font-family: 'Lato', sans-serif; background-color: #f8f9fa; color: #333; -webkit-tap-highlight-color: transparent; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        
+        .calendar-container { background: white; border-radius: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); overflow: hidden; }
+        .calendar-header { background: #1a3a24; color: white; padding: 20px; display: flex; justify-content: space-between; align-items: center; }
+        .calendar-grid { display: grid; grid-template-columns: repeat(7, 1fr); text-align: center; padding: 10px; }
+        .day-name { font-size: 10px; font-weight: bold; color: #999; padding-bottom: 10px; text-transform: uppercase; }
+        
+        .day-cell { 
+            padding: 15px 5px; font-size: 14px; position: relative; cursor: pointer; 
+            border-radius: 15px; transition: 0.2s; border: 1px solid transparent; 
+            overflow: hidden; isolation: isolate; 
+        }
+        .day-cell:hover { background: #f0fdf4; }
+        .day-cell.today { border: 2px solid #1a3a24; color: #1a3a24; font-weight: bold; }
+        .day-cell.selected { background: #1a3a24 !important; color: white !important; }
+        .day-cell.not-current { color: #ccc; }
+        
+        .day-fill { position: absolute; bottom: 0; left: 0; width: 100%; background-color: #d1fae5; z-index: -1; transition: height 0.5s ease; }
+        .day-cell.selected .day-fill { display: none; }
+
+        .dot-container { display: flex; justify-content: center; gap: 2px; position: absolute; bottom: 5px; left: 0; right: 0; }
+        .dot { width: 4px; height: 4px; border-radius: 50%; }
+        .dot-green { background: #10b981; } 
+        .dot-red { background: #ef4444; }   
+
+        .slot-admin { transition: all 0.2s; cursor: pointer; border: 2px solid #d1d5db; text-align: center; }
+        .slot-admin.blocked-manual { background-color: #fee2e2; color: #b91c1c; border-color: #f87171; }
+        .slot-admin.booked { background-color: #ef4444; color: white; border-color: #b91c1c; cursor: not-allowed; }
+        
+        .modal-admin { display: none; position: fixed; z-index: 500; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+        .modal-content-admin { background: white; margin: 5% auto; padding: 30px; border-radius: 40px; width: 95%; max-width: 500px; max-height: 90vh; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        
+        .session-item { border-left: 3px solid #1a3a24; padding-left: 15px; margin-bottom: 15px; background: #f9f9f9; padding: 15px; border-radius: 0 15px 15px 0; }
+        
+        .marca-punto {
+            position: absolute; width: 12px; height: 12px; background-color: rgba(239, 68, 68, 0.8); 
+            border: 2px solid #991b1b; border-radius: 50%; transform: translate(-50%, -50%);
+            pointer-events: none; box-shadow: 0 0 5px rgba(0,0,0,0.5);
+        }
+
+        .halo-wrapper {
+            position: relative;
+            width: 280px; height: 280px; margin: 0 auto;
+            display: flex; align-items: center; justify-content: center;
+            background-color: #ffffff; border-radius: 50%;
+            -webkit-mask-image: radial-gradient(circle, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 70%);
+            mask-image: radial-gradient(circle, rgba(0,0,0,1) 25%, rgba(0,0,0,0) 70%);
+        }
+
+        .halo-logo-img { width: 220px; mix-blend-mode: multiply; -webkit-mix-blend-mode: multiply; object-fit: contain; background-color: transparent; }
+
+        #canvasTarjeta { width: 100%; max-width: 400px; height: auto; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); margin: 0 auto; display: block; }
+
+        /* --- NUEVOS ESTILOS FIDELIDAD --- */
+        .sello-admin { width: 32px; height: 32px; border-radius: 50%; border: 2px solid #1a3a24; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 900; transition: all 0.3s; }
+        .sello-lleno { background: #1a3a24; color: #d4af37; border-color: #d4af37; box-shadow: 0 0 10px rgba(212, 175, 55, 0.3); }
+        .sello-vacio { background: #f3f4f6; color: #ccc; border-style: dashed; }
+    </style>
+</head>
+<body>
+
+    <div id="loginOverlay" class="fixed inset-0 z-[600] flex items-center justify-center p-6 bg-cover bg-center bg-no-repeat" style="background-image: url('fondo.jpg');">
+        <div class="absolute inset-0 bg-black/10"></div>
+        <div class="relative w-full max-w-sm text-center flex flex-col items-center mt-[-8vh]">
+            <div class="halo-wrapper mb-6 shadow-none">
+                <img src="logo.png" alt="Pura Vida Wellness" class="halo-logo-img" onerror="this.outerHTML='<div class=\\'w-20 h-20 bg-emerald-50/80 rounded-full flex items-center justify-center mx-auto text-emerald-800 text-3xl\\'><i class=\\'fa-solid fa-leaf\\'></i></div>'">
+            </div>
+            <div class="w-full px-2 space-y-5">
+                <input type="password" id="pinInput" placeholder="PIN DE SEGURIDAD" class="w-full py-5 px-6 bg-white/40 backdrop-blur-md border border-white/40 rounded-full text-center text-lg font-black tracking-[0.2em] text-stone-900 placeholder-stone-700 outline-none focus:bg-white/50 focus:border-white shadow-[0_8px_32px_rgba(0,0,0,0.1)] transition-all">
+                <button onclick="checkLogin()" class="w-full py-5 px-6 bg-[#415a45]/95 hover:bg-[#2d3f30] text-white rounded-full tracking-[0.2em] text-base shadow-[0_8px_32px_rgba(0,0,0,0.25)] transition-all active:scale-95 border border-[#415a45]/50" style="font-family: 'Playfair Display', serif;">
+                    Entrar al Sistema
+                </button>
+                <p id="loginError" class="text-white mt-4 hidden font-bold bg-red-600/80 backdrop-blur-md py-2 px-6 rounded-full text-xs shadow-lg tracking-widest uppercase inline-block">PIN INCORRECTO</p>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalCupones" class="modal-admin" onclick="if(event.target==this) cerrarModalCupones()">
+        <div class="modal-content-admin shadow-2xl bg-stone-50">
+            <div class="flex justify-between items-center mb-6 border-b pb-4">
+                <h3 class="text-xl font-bold text-[#1a3a24] uppercase tracking-widest"><i class="fas fa-gift text-amber-500 mr-2"></i>Tarjetas de Regalo</h3>
+                <button onclick="cerrarModalCupones()" class="text-stone-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            
+            <div class="space-y-4 mb-8 bg-white p-5 rounded-3xl border shadow-sm">
+                <h4 class="text-[10px] font-black uppercase text-stone-400 tracking-widest text-center mb-3">Generar Nuevo Cupón</h4>
+                <div>
+                    <label class="text-[10px] font-bold uppercase text-stone-400">Tipo de Masaje para el Cupón:</label>
+                    <select id="tipoMasajeCupon" class="w-full p-4 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold text-stone-700 outline-none mb-3">
+                        <option value="pies">Pies Relajantes ($30)</option>
+                        <option value="espalda">Espalda Terapéutica ($60)</option>
+                        <option value="completo">Cuerpo Completo ($90)</option>
+                    </select>
+                </div>
+                <div class="flex flex-col gap-3">
+                    <button onclick="generarCuponAutomatico()" class="w-full py-4 bg-amber-500 hover:bg-amber-600 text-white rounded-2xl font-bold text-xs uppercase tracking-widest transition-all shadow-md">Generar Consecutivo (PVW...)</button>
+                    <div class="flex gap-2 items-center mt-2">
+                        <input type="text" id="inputCustomCupon" placeholder="CÓDIGO PERSONALIZADO" class="w-full p-4 border rounded-2xl text-xs font-bold uppercase text-stone-700 outline-none focus:border-amber-500 text-center" style="text-transform: uppercase;">
+                        <button onclick="generarCuponManual()" class="py-4 px-6 bg-[#1a3a24] text-white rounded-2xl font-bold text-xs uppercase tracking-widest shadow-md">Crear</button>
+                    </div>
+                </div>
+            </div>
+
+            <h4 class="text-[10px] font-black uppercase text-stone-400 tracking-widest mb-3">Lista de Cupones Existentes</h4>
+            <div id="listaCuponesAdmin" class="space-y-3 max-h-64 overflow-y-auto pr-2"><p class="text-center py-4 text-stone-400 text-xs italic uppercase">Cargando cupones...</p></div>
+            <button onclick="cerrarModalCupones()" class="w-full mt-6 py-4 bg-stone-200 text-stone-600 rounded-2xl font-bold uppercase tracking-widest text-xs">Cerrar</button>
+        </div>
+    </div>
+
+    <div id="modalDisenoTarjeta" class="modal-admin" onclick="if(event.target==this) cerrarDisenoTarjeta()">
+        <div class="modal-content-admin shadow-2xl bg-stone-50">
+            <div class="flex justify-between items-center mb-4"><h3 class="text-xl font-bold text-[#1a3a24] uppercase tracking-widest"><i class="fas fa-paint-brush text-amber-500 mr-2"></i>Estudio de Tarjetas</h3><button onclick="cerrarDisenoTarjeta()" class="text-stone-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button></div>
+            <div class="space-y-4">
+                <div class="bg-white p-4 rounded-2xl border shadow-sm space-y-3">
+                    <div><label class="text-[10px] font-bold uppercase text-stone-400">1. Selecciona el Fondo:</label><select id="tarjetaFondo" onchange="dibujarTarjeta()" class="w-full p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold text-stone-700 outline-none"><option value="fondo-spa.jpg">Spa / Relajación</option><option value="fondo-cumple.jpg">Feliz Cumpleaños</option><option value="fondo-madre.jpg">Día de la Madre</option><option value="fondo-amor.jpg">Amor y Amistad</option><option value="fondo-navidad.jpg">Navidad</option></select></div>
+                    <div class="grid grid-cols-2 gap-3">
+                        <div><label class="text-[10px] font-bold uppercase text-stone-400">2. De:</label><input type="text" id="tarjetaDe" oninput="dibujarTarjeta()" placeholder="Carlos" class="w-full p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold text-stone-700 outline-none"></div>
+                        <div><label class="text-[10px] font-bold uppercase text-stone-400">3. Para:</label><input type="text" id="tarjetaPara" oninput="dibujarTarjeta()" placeholder="Ana" class="w-full p-3 bg-stone-50 rounded-xl border border-stone-200 text-xs font-bold text-stone-700 outline-none"></div>
+                    </div>
+                    <input type="hidden" id="tarjetaCodigo"><input type="hidden" id="tarjetaServicio">
+                </div>
+                <div class="text-center"><canvas id="canvasTarjeta" width="800" height="600"></canvas></div>
+                <button onclick="descargarTarjeta()" class="w-full py-4 bg-[#1a3a24] text-white rounded-[20px] font-black uppercase text-xs shadow-lg flex justify-center items-center gap-2"><i class="fas fa-download"></i> Descargar Imagen</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalTratamiento" class="modal-admin" onclick="if(event.target==this) cerrarModalTratamiento()">
+        <div class="modal-content-admin shadow-2xl bg-stone-50">
+            <div class="flex justify-between items-center mb-4"><h3 class="text-xl font-bold text-[#1a3a24] uppercase tracking-widest">Ficha de Sesión</h3><button onclick="cerrarModalTratamiento()" class="text-stone-400 hover:text-red-500"><i class="fa-solid fa-xmark text-xl"></i></button></div>
+            <p id="infoPacienteTratamiento" class="text-xs font-black text-emerald-700 uppercase mb-6 bg-emerald-100 p-3 rounded-xl text-center"></p>
+            <div class="space-y-6">
+                <div>
+                    <div class="flex justify-between items-end mb-2"><label class="text-[10px] font-black uppercase text-stone-500 tracking-widest">Mapeo Corporal</label><button onclick="limpiarMarcas()" class="text-[9px] text-red-500 font-bold uppercase hover:underline"><i class="fa-solid fa-eraser"></i> Borrar Marcas</button></div>
+                    <div class="relative w-full border-2 border-stone-200 rounded-2xl overflow-hidden bg-white cursor-crosshair" style="touch-action: manipulation;" id="contenedorMapaCuerpo" onclick="agregarMarca(event)"><img src="15037.jpg" alt="Mapa Corporal" class="w-full h-auto pointer-events-none"><div id="capaMarcas" class="absolute inset-0 pointer-events-none"></div></div>
+                </div>
+                <div class="space-y-4">
+                    <div><label class="text-[10px] font-black uppercase text-stone-500 tracking-widest">SÍNTOMAS SUBJETIVOS</label><textarea id="txtSintomasSubjetivos" rows="2" class="w-full p-4 bg-white rounded-xl border-2 border-stone-100 font-bold text-base text-stone-700 outline-none focus:border-emerald-500"></textarea></div>
+                    <div><label class="text-[10px] font-black uppercase text-stone-500 tracking-widest">SÍNTOMAS OBJETIVOS</label><textarea id="txtSintomasObjetivos" rows="2" class="w-full p-4 bg-white rounded-xl border-2 border-stone-100 font-bold text-base text-stone-700 outline-none focus:border-emerald-500"></textarea></div>
+                    <div><label class="text-[10px] font-black uppercase text-stone-500 tracking-widest">PLAN / NOTAS</label><textarea id="txtPlan" rows="2" class="w-full p-4 bg-white rounded-xl border-2 border-stone-100 font-bold text-base text-stone-700 outline-none focus:border-emerald-500"></textarea></div>
+                </div>
+                <div class="pt-4 pb-8"><button onclick="guardarTratamiento()" class="w-full py-5 bg-[#1a3a24] text-white rounded-[20px] font-black uppercase text-xs shadow-lg flex justify-center items-center gap-2"><i class="fa-solid fa-floppy-disk"></i> Guardar Ficha e Historial</button></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modalHistorial" class="modal-admin" onclick="if(event.target==this) cerrarModal()"><div class="modal-content-admin shadow-2xl"><div id="contenidoHistorial"></div><button onclick="cerrarModal()" class="w-full mt-8 py-4 bg-stone-800 text-white rounded-2xl font-bold uppercase tracking-widest text-xs">Cerrar</button></div></div>
+    
+    <div id="modalReagendar" class="modal-admin" onclick="if(event.target==this) cerrarModalReagendar()">
+        <div class="modal-content-admin shadow-2xl">
+            <h3 class="text-xl font-bold text-[#1a3a24] mb-2 uppercase tracking-widest">Gestión de Cita</h3>
+            <p id="infoReagendar" class="text-xs text-stone-500 mb-6 font-bold uppercase"></p>
+            <div class="space-y-4">
+                <div><label class="text-[10px] font-bold uppercase text-stone-400">1. Acción:</label><select id="motivoCambio" onchange="toggleReagendarCampos()" class="w-full p-4 bg-white rounded-xl border-2 border-stone-100 font-bold text-base outline-none focus:border-emerald-500"><option value="cliente">Reagendar: Cliente lo solicitó</option><option value="admin">Reagendar: Logística</option><option value="cancelacion">Cancelar Cita</option></select></div>
+                <div id="camposReagendar" class="space-y-4">
+                    <div><label class="text-[10px] font-bold uppercase text-stone-400">2. Nueva Fecha:</label><input type="date" id="newDateInput" onchange="loadFreeSlotsForReschedule()" class="w-full p-4 border-2 rounded-xl outline-none focus:border-emerald-500"></div>
+                    <div><label class="text-[10px] font-bold uppercase text-stone-400">3. Nueva Hora:</label><select id="newTimeSelect" class="w-full p-4 border-2 rounded-xl outline-none focus:border-emerald-500"><option value="">Selecciona fecha primero...</option></select></div>
+                </div>
+                <div class="pt-4"><button id="btnConfirmarModal" onclick="confirmarReagendar()" class="w-full py-5 bg-emerald-700 text-white rounded-[25px] font-black uppercase text-xs shadow-lg active:scale-95 transition">Confirmar Acción</button></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminContent" class="hidden min-h-screen pb-20">
+        <header class="bg-[#1a3a24] p-8 text-white text-center rounded-b-[40px] shadow-lg relative">
+            <h1 class="text-2xl font-black uppercase tracking-[0.3em]">ADMINISTRACIÓN</h1>
+            
+            <div class="mt-6 max-w-md mx-auto flex gap-2">
+                <input type="tel" id="inputBusquedaFidelidad" placeholder="Buscar Teléfono Clienta" class="flex-grow p-4 rounded-2xl bg-white/10 border border-white/20 text-white font-bold outline-none placeholder-white/40 text-sm">
+                <button onclick="buscarFidelidadManual()" class="bg-amber-500 p-4 rounded-2xl text-white shadow-lg"><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="mt-4 flex justify-center gap-4">
+                <button onclick="abrirModalCupones()" class="bg-amber-500/90 hover:bg-amber-600 text-white px-8 py-3 rounded-full font-bold text-xs tracking-widest uppercase transition-all shadow-xl active:scale-95 flex items-center gap-2"><i class="fas fa-gift"></i> Gestión de Cupones</button>
+            </div>
+        </header>
+
+        <main class="container mx-auto px-4 mt-8 max-w-4xl space-y-6">
+            <div class="calendar-container">
+                <div class="calendar-header"><button onclick="changeMonth(-1)"><i class="fa-solid fa-chevron-left"></i></button><h2 id="calendarTitle" class="text-lg font-bold uppercase tracking-widest">Cargando...</h2><button onclick="changeMonth(1)"><i class="fa-solid fa-chevron-right"></i></button></div>
+                <div class="calendar-grid bg-stone-50 border-b"><div class="day-name">Dom</div><div class="day-name">Lun</div><div class="day-name">Mar</div><div class="day-name">Mié</div><div class="day-name">Jue</div><div class="day-name">Vie</div><div class="day-name">Sáb</div></div>
+                <div id="calendarDays" class="calendar-grid py-4"></div>
+            </div>
+
+            <div id="dayDetailSection" class="space-y-6">
+                <div class="flex items-center gap-4"><div class="h-[2px] bg-stone-200 flex-grow"></div><h2 id="selectedDateDisplay" class="text-sm font-black text-stone-400 uppercase tracking-[0.2em]">Día no seleccionado</h2><div class="h-[2px] bg-stone-200 flex-grow"></div></div>
+                <div id="listaCitasDia" class="space-y-4"></div>
+                <div id="gestionAgenda" class="bg-white p-8 rounded-[40px] shadow-sm hidden border border-stone-100">
+                    <h3 class="text-center text-xs font-bold uppercase tracking-widest text-stone-400 mb-6">Gestión de Horarios</h3>
+                    <div class="grid grid-cols-2 gap-4 mb-8">
+                        <button onclick="bloquearDiaCompleto()" class="bg-red-50 text-red-600 border border-red-100 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-red-100 transition">Bloquear Todo el Día</button>
+                        <button onclick="liberarDiaCompleto()" class="bg-emerald-50 text-emerald-700 border border-emerald-100 py-4 rounded-2xl text-[10px] font-black uppercase tracking-widest hover:bg-emerald-100 transition">Liberar Todo el Día</button>
+                    </div>
+                    <div class="grid grid-cols-3 sm:grid-cols-4 gap-3" id="gridAdminSlots"></div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, getDoc, setDoc, deleteDoc, writeBatch, updateDoc, query, where, getDocs } from "https://www.gstatic.com/firebasejs/11.6.1/firebase-firestore.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyDf8V0EkG8kQWAKvbc9uekqXYaRtzr8elc", authDomain: "tica-natural-spa.firebaseapp.com", projectId: "tica-natural-spa", storageBucket: "tica-natural-spa.firebasestorage.app", messagingSenderId: "441291257817", appId: "1:441291257817:web:9b37ee0a611c9ef649cbc8" };
+        const app = initializeApp(firebaseConfig); const db = getFirestore(app);
+        const slots = ["08:00 AM", "09:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "01:00 PM", "02:00 PM", "03:00 PM", "04:00 PM", "05:00 PM", "06:00 PM"];
+        let todasLasCitas = []; let bloqueosManuales = []; let cuponesArray = []; let currentMonth = new Date().getMonth(); let currentYear = new Date().getFullYear(); let selectedDate = null; let citaAEditar = null; let citaTratamientoActual = null; let marcasCorporales = [];
+
+        window.checkLogin = () => { if(document.getElementById('pinInput').value === "1282") { document.getElementById('loginOverlay').classList.add('hidden'); document.getElementById('adminContent').classList.remove('hidden'); iniciarApp(); } else { document.getElementById('loginError').classList.remove('hidden'); } };
+
+        function iniciarApp() {
+            onSnapshot(collection(db, 'bookings'), (snap) => { todasLasCitas = snap.docs.map(d => ({id: d.id, ...d.data()})); renderCalendar(); if(selectedDate) updateDayDetail(); });
+            onSnapshot(collection(db, 'blocks'), (snap) => { bloqueosManuales = snap.docs.map(d => ({id: d.id, ...d.data()})); renderCalendar(); if(selectedDate) updateDayDetail(); });
+            onSnapshot(collection(db, 'cupones'), (snap) => { cuponesArray = snap.docs.map(d => ({id: d.id, ...d.data()})); renderCupones(); });
+        }
+
+        // --- LÓGICA FIDELIDAD ---
+        window.buscarFidelidadManual = () => {
+            const tel = document.getElementById('inputBusquedaFidelidad').value.replace(/\D/g, '');
+            if(tel.length < 8) return alert("Número inválido.");
+            window.verHistorial(tel);
+        };
+
+        window.verHistorial = async (telefono) => {
+            const telLimpio = telefono.replace(/\D/g, '');
+            const snap = await getDoc(doc(db, 'clients', telLimpio));
+            const modal = document.getElementById('modalHistorial');
+            const cont = document.getElementById('contenidoHistorial');
+            modal.style.display = "block";
+            cont.innerHTML = "<p class='text-center py-4 font-bold'>Cargando...</p>";
+            
+            if(snap.exists()) {
+                const d = snap.data();
+                const masajes = d.masajesAcumulados || 0;
+                let sellos = "";
+                for(let i=1; i<=10; i++) {
+                    const clase = i <= masajes ? 'sello-lleno' : 'sello-vacio';
+                    sellos += `<div class="sello-admin ${clase}">${i <= masajes ? '✔' : i}</div>`;
+                }
+
+                // Obtener citas
+                const q = query(collection(db, "bookings"), where("telefono", "==", telefono));
+                const qSnap = await getDocs(q);
+                let sesiones = []; qSnap.forEach(doc => sesiones.push({id: doc.id, ...doc.data()}));
+                sesiones.sort((a,b) => b.fecha.localeCompare(a.fecha));
+
+                cont.innerHTML = `
+                    <h3 class="text-2xl font-black text-[#1a3a24] mb-1">${d.nombre}</h3>
+                    <p class="text-[10px] font-bold text-stone-400 uppercase tracking-widest mb-6">Ficha de Clienta</p>
+                    
+                    <div class="bg-stone-50 p-6 rounded-[30px] border mb-6">
+                        <p class="text-[9px] font-black uppercase text-stone-400 tracking-widest mb-4">Tarjeta de Fidelidad</p>
+                        <div class="flex flex-wrap justify-center gap-2 mb-6">${sellos}</div>
+                        <div class="flex justify-center items-center gap-4">
+                            <button onclick="ajustarSellos('${telLimpio}', -1)" class="w-10 h-10 bg-white border border-stone-200 rounded-full shadow-sm text-red-500 font-bold">-1</button>
+                            <span class="text-2xl font-black text-[#1a3a24]">${masajes}/10</span>
+                            <button onclick="ajustarSellos('${telLimpio}', 1)" class="w-10 h-10 bg-[#1a3a24] text-white rounded-full shadow-lg font-bold">+1</button>
+                        </div>
+                    </div>
+
+                    <div class="text-left space-y-4 text-xs">
+                        <div class="bg-red-50 p-4 rounded-2xl border border-red-100">
+                            <p class="text-red-800 font-black mb-1">HISTORIAL MÉDICO INICIAL</p>
+                            <p><b>Condiciones:</b> ${d.condicionesMedicas || 'Ninguna'}</p>
+                            <p><b>Accidentes:</b> ${d.accidentes || 'Ninguno'}</p>
+                            <p><b>Zonas:</b> ${d.zonasDolor || 'N/A'}</p>
+                        </div>
+                        <p class="font-black text-[#1a3a24] uppercase mt-4">Sesiones Registradas (${sesiones.length})</p>
+                        <div class="max-h-60 overflow-y-auto pr-2 space-y-2">
+                            ${sesiones.map(s => `<div class="session-item shadow-sm border border-stone-100 flex justify-between items-center"><p class="text-[10px] font-black uppercase">${s.fecha} - ${s.hora}</p>${s.fichaCompletada ? '<i class="fas fa-check-circle text-emerald-500"></i>' : ''}</div>`).join('')}
+                        </div>
+                    </div>
+                    <button onclick="reiniciarPuntos('${telLimpio}')" class="mt-6 text-[9px] font-black text-red-400 uppercase tracking-widest underline">Reiniciar Tarjeta a 0</button>
+                `;
+            } else { cont.innerHTML = "<p class='text-center py-4 text-red-500 font-bold'>Clienta no encontrada.</p>"; }
+        };
+
+        window.ajustarSellos = async (tel, cambio) => {
+            const docRef = doc(db, 'clients', tel);
+            const snap = await getDoc(docRef);
+            let nuevo = (snap.data().masajesAcumulados || 0) + cambio;
+            if(nuevo < 0) nuevo = 0; if(nuevo > 10) nuevo = 10;
+            await updateDoc(docRef, { masajesAcumulados: nuevo });
+            window.verHistorial(tel);
+        };
+
+        window.reiniciarPuntos = async (tel) => {
+            if(confirm("¿Reclamar premio y reiniciar tarjeta?")) {
+                await updateDoc(doc(db, 'clients', tel), { masajesAcumulados: 0 });
+                window.verHistorial(tel);
+            }
+        };
+
+        // --- LÓGICA CUPONES ---
+        window.abrirModalCupones = () => document.getElementById('modalCupones').style.display = "block";
+        window.cerrarModalCupones = () => document.getElementById('modalCupones').style.display = "none";
+        window.generarCuponAutomatico = async () => {
+            const prefix = "PVW"; let maxNum = 0;
+            cuponesArray.forEach(c => { if(c.id.startsWith(prefix)) { const num = parseInt(c.id.replace(prefix, '')); if(!isNaN(num) && num > maxNum) maxNum = num; } });
+            const codigo = `${prefix}${String(maxNum + 1).padStart(3, '0')}`;
+            const tipo = document.getElementById('tipoMasajeCupon').value;
+            await setDoc(doc(db, 'cupones', codigo), { creadoEl: new Date().toISOString(), tipoServicio: tipo, usado: false });
+        };
+        window.generarCuponManual = async () => {
+            const codigo = document.getElementById('inputCustomCupon').value.trim().toUpperCase();
+            const tipo = document.getElementById('tipoMasajeCupon').value;
+            if(!codigo) return;
+            await setDoc(doc(db, 'cupones', codigo), { creadoEl: new Date().toISOString(), tipoServicio: tipo, usado: false });
+            document.getElementById('inputCustomCupon').value = "";
+        };
+        window.renderCupones = () => {
+            const list = document.getElementById('listaCuponesAdmin');
+            list.innerHTML = cuponesArray.map(c => `
+                <div class="p-4 border rounded-2xl bg-white shadow-sm flex justify-between items-center mb-2">
+                    <div><h4 class="font-black text-emerald-800 uppercase">${c.id}</h4><p class="text-[9px] font-bold text-stone-400 uppercase">${c.tipoServicio}</p></div>
+                    ${!c.usado ? `<button onclick="abrirDisenoTarjeta('${c.id}', '${c.tipoServicio}')" class="bg-stone-100 p-2 rounded-lg text-stone-600"><i class="fas fa-paint-brush"></i></button>` : '<span class="text-[9px] font-black text-red-500 uppercase">USADO</span>'}
+                </div>`).join('');
+        };
+
+        // --- DISEÑO TARJETA ---
+        window.abrirDisenoTarjeta = (cod, srv) => { document.getElementById('modalCupones').style.display = 'none'; document.getElementById('modalDisenoTarjeta').style.display = 'block'; document.getElementById('tarjetaCodigo').value = cod; document.getElementById('tarjetaServicio').value = srv; window.dibujarTarjeta(); };
+        window.cerrarDisenoTarjeta = () => { document.getElementById('modalDisenoTarjeta').style.display = 'none'; document.getElementById('modalCupones').style.display = 'block'; };
+        window.dibujarTarjeta = () => {
+            const canvas = document.getElementById('canvasTarjeta'); const ctx = canvas.getContext('2d');
+            const bg = document.getElementById('tarjetaFondo').value; const para = document.getElementById('tarjetaPara').value.toUpperCase();
+            const de = document.getElementById('tarjetaDe').value.toUpperCase(); const cod = document.getElementById('tarjetaCodigo').value;
+            const img = new Image(); img.crossOrigin = "Anonymous"; img.src = bg;
+            img.onload = () => {
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                ctx.fillStyle = "rgba(255, 255, 255, 0.75)"; ctx.beginPath(); ctx.roundRect(50, 50, canvas.width - 100, canvas.height - 100, 30); ctx.fill();
+                ctx.textAlign = "center"; ctx.fillStyle = "#1a3a24"; ctx.font = "bold 45px 'Playfair Display', serif"; ctx.fillText("¡Tienes un Regalo!", canvas.width / 2, 130);
+                ctx.font = "bold 28px 'Lato'"; ctx.fillStyle = "#333"; ctx.fillText("PARA: " + (para || "__________"), canvas.width / 2, 260); ctx.fillText("DE: " + (de || "__________"), canvas.width / 2, 310);
+                ctx.font = "900 65px 'Lato'"; ctx.fillStyle = "#d4af37"; ctx.fillText(cod, canvas.width / 2, 470);
+            };
+        };
+        window.descargarTarjeta = () => { const canvas = document.getElementById('canvasTarjeta'); const link = document.createElement('a'); link.download = `Regalo_${document.getElementById('tarjetaCodigo').value}.jpg`; link.href = canvas.toDataURL('image/jpeg', 0.9); link.click(); };
+
+        // --- CALENDARIO Y AGENDA ---
+        window.changeMonth = (dir) => { currentMonth += dir; if(currentMonth < 0){ currentMonth=11; currentYear--; } if(currentMonth > 11){ currentMonth=0; currentYear++; } renderCalendar(); };
+        function renderCalendar() {
+            const title = document.getElementById('calendarTitle'); const grid = document.getElementById('calendarDays');
+            const meses = ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"];
+            title.innerText = `${meses[currentMonth]} ${currentYear}`; grid.innerHTML = "";
+            const firstDay = new Date(currentYear, currentMonth, 1).getDay(); const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+            const prevDays = new Date(currentYear, currentMonth, 0).getDate();
+            for(let x=firstDay; x>0; x--) grid.innerHTML += `<div class="day-cell not-current">${prevDays - x + 1}</div>`;
+            for(let i=1; i<=daysInMonth; i++) {
+                const dStr = `${currentYear}-${String(currentMonth+1).padStart(2,'0')}-${String(i).padStart(2,'0')}`;
+                const citas = todasLasCitas.filter(c => c.fecha === dStr); const locks = bloqueosManuales.filter(b => b.fecha === dStr);
+                const isSelected = selectedDate === dStr;
+                let dots = ""; if(citas.length > 0) dots += `<span class="dot dot-green"></span>`; if(locks.length > 0) dots += `<span class="dot dot-red"></span>`;
+                grid.innerHTML += `<div onclick="selectDay('${dStr}')" class="day-cell ${isSelected ? 'selected' : ''}">${i}<div class="dot-container">${dots}</div></div>`;
+            }
+        }
+        window.selectDay = (d) => { selectedDate = d; renderCalendar(); updateDayDetail(); document.getElementById('gestionAgenda').classList.remove('hidden'); };
+        function updateDayDetail() {
+            const lista = document.getElementById('listaCitasDia'); document.getElementById('selectedDateDisplay').innerText = selectedDate;
+            const citas = todasLasCitas.filter(c => c.fecha === selectedDate).sort((a,b) => a.hora.localeCompare(b.hora));
+            lista.innerHTML = citas.length ? citas.map(c => `<div class="bg-white p-5 rounded-[30px] shadow-sm border-l-8 border-emerald-800 flex justify-between items-center"><div onclick="verHistorial('${c.telefono}')" class="cursor-pointer"><span class="bg-red-500 text-white text-[10px] font-black px-2 py-1 rounded-full">${c.hora}</span><h4 class="font-black text-lg mt-2">${c.nombre}</h4><p class="text-xs text-stone-400 uppercase font-bold">${c.tipo || 'Terapia'}</p></div><div class="flex gap-2"><button onclick="abrirFichaTratamiento('${c.id}')" class="w-12 h-12 bg-emerald-50 text-emerald-700 rounded-2xl flex items-center justify-center"><i class="fa-solid fa-file-medical"></i></button><button onclick="abrirModalReagendar('${c.id}')" class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center"><i class="fa-solid fa-calendar-day"></i></button></div></div>`).join('') : "<p class='text-center py-4 text-stone-400'>Sin citas agendadas.</p>";
+            renderAdminSlots();
+        }
+        function renderAdminSlots() {
+            const grid = document.getElementById('gridAdminSlots'); const ocupados = todasLasCitas.filter(c => c.fecha === selectedDate).map(c => c.hora);
+            const locks = bloqueosManuales.filter(b => b.fecha === selectedDate).map(b => b.hora);
+            grid.innerHTML = slots.map(time => {
+                let cl = ""; if(ocupados.includes(time)) cl = "booked"; else if(locks.includes(time)) cl = "blocked-manual";
+                return `<div onclick="toggleBloqueo('${time}', '${cl}')" class="slot-admin p-4 rounded-2xl font-black text-[10px] shadow-sm ${cl}">${time}</div>`;
+            }).join('');
+        }
+        window.toggleBloqueo = async (h, status) => { if(status === "booked") return; const id = `${selectedDate}_${h.replace(' ','_')}`; if(status === "blocked-manual") await deleteDoc(doc(db, 'blocks', id)); else await setDoc(doc(db, 'blocks', id), { fecha: selectedDate, hora: h, id: id }); };
+        window.bloquearDiaCompleto = async () => { const batch = writeBatch(db); slots.forEach(h => { const id = `${selectedDate}_${h.replace(' ','_')}`; batch.set(doc(db, 'blocks', id), { fecha: selectedDate, hora: h, id: id }); }); await batch.commit(); };
+        window.liberarDiaCompleto = async () => { const batch = writeBatch(db); bloqueosManuales.filter(b => b.fecha === selectedDate).forEach(b => batch.delete(doc(db, 'blocks', b.id))); await batch.commit(); };
+
+        // --- FICHA Y MARCAS ---
+        window.abrirFichaTratamiento = (id) => { citaTratamientoActual = todasLasCitas.find(c => c.id === id); document.getElementById('infoPacienteTratamiento').innerText = `Ficha: ${citaTratamientoActual.nombre}`; document.getElementById('txtSintomasSubjetivos').value = citaTratamientoActual.sintomasSubjetivos || ""; marcasCorporales = citaTratamientoActual.marcasCuerpo || []; renderizarMarcasCorporales(); document.getElementById('modalTratamiento').style.display = "block"; };
+        window.agregarMarca = (e) => { const rect = e.currentTarget.getBoundingClientRect(); const x = ((e.clientX - rect.left) / rect.width) * 100; const y = ((e.clientY - rect.top) / rect.height) * 100; marcasCorporales.push({x, y}); renderizarMarcasCorporales(); };
+        window.limpiarMarcas = () => { marcasCorporales = []; renderizarMarcasCorporales(); };
+        function renderizarMarcasCorporales() { document.getElementById('capaMarcas').innerHTML = marcasCorporales.map(m => `<div class="marca-punto" style="left:${m.x}%; top:${m.y}%"></div>`).join(''); }
+        
+        window.guardarTratamiento = async () => {
+            const sSub = document.getElementById('txtSintomasSubjetivos').value;
+            try {
+                // Actualizar ficha
+                await updateDoc(doc(db, 'bookings', citaTratamientoActual.id), { marcasCuerpo: marcasCorporales, sintomasSubjetivos: sSub, fichaCompletada: true });
+                
+                // SUMA AUTOMÁTICA DE SELLOS
+                if(!citaTratamientoActual.puntoSumado) {
+                    const tel = citaTratamientoActual.telefono.replace(/\D/g, '');
+                    const snap = await getDoc(doc(db, 'clients', tel));
+                    if(snap.exists()) {
+                        let masajes = (snap.data().masajesAcumulados || 0) + 1;
+                        if(masajes > 10) masajes = 10;
+                        await updateDoc(doc(db, 'clients', tel), { masajesAcumulados: masajes });
+                        await updateDoc(doc(db, 'bookings', citaTratamientoActual.id), { puntoSumado: true });
+                        alert("Ficha guardada y +1 sello sumado con éxito.");
+                    }
+                } else { alert("Ficha actualizada."); }
+                cerrarModalTratamiento();
+            } catch(e) { alert("Error."); }
+        };
+
+        // --- REAGENDAR ---
+        window.abrirModalReagendar = (id) => { citaAEditar = todasLasCitas.find(c => c.id === id); document.getElementById('infoReagendar').innerText = `${citaAEditar.nombre} (${citaAEditar.hora})`; document.getElementById('newDateInput').value = citaAEditar.fecha; document.getElementById('modalReagendar').style.display = "block"; loadFreeSlotsForReschedule(); };
+        window.loadFreeSlotsForReschedule = () => { const newD = document.getElementById('newDateInput').value; const sel = document.getElementById('newTimeSelect'); if(!newD) return; const ocupados = todasLasCitas.filter(c => c.fecha === newD && c.id !== citaAEditar.id).map(c => c.hora); const blocks = bloqueosManuales.filter(b => b.fecha === newD).map(b => b.hora); sel.innerHTML = `<option value="">-- Horas Libres --</option>`; slots.forEach(t => { if(!ocupados.includes(t) && !blocks.includes(t)) sel.innerHTML += `<option value="${t}">${t}</option>`; }); };
+        window.confirmarReagendar = async () => {
+            const motivo = document.getElementById('motivoCambio').value;
+            if(motivo === 'cancelacion') { await deleteDoc(doc(db, 'bookings', citaAEditar.id)); alert("Cancelada"); cerrarModalReagendar(); return; }
+            const nd = document.getElementById('newDateInput').value; const nh = document.getElementById('newTimeSelect').value;
+            if(!nd || !nh) return alert("Selecciona fecha y hora.");
+            await updateDoc(doc(db, 'bookings', citaAEditar.id), { fecha: nd, hora: nh });
+            alert("Reagendada con éxito."); cerrarModalReagendar();
+        };
+
+        window.cerrarModal = () => document.getElementById('modalHistorial').style.display = "none";
+        window.cerrarModalTratamiento = () => document.getElementById('modalTratamiento').style.display = "none";
+        window.cerrarModalReagendar = () => document.getElementById('modalReagendar').style.display = "none";
+        window.cerrarModalCupones = () => document.getElementById('modalCupones').style.display = "none";
+        window.toggleReagendarCampos = () => { document.getElementById('camposReagendar').style.display = document.getElementById('motivoCambio').value === 'cancelacion' ? 'none' : 'block'; };
+    </script>
+</body>
+</html>
